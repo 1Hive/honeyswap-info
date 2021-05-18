@@ -193,12 +193,12 @@ function SideNav({ history }) {
             style={{ marginLeft: ".75rem", marginBottom: "4rem" }}
           >
             <HeaderText>
-              <Link href="https://dxdao.eth.link" target="_blank">
-                DXdao
+              <Link href="https://1hive.org" target="_blank">
+                1Hive
               </Link>
             </HeaderText>
             <HeaderText>
-              <Link href="https://twitter.com/SwaprEth" target="_blank">
+              <Link href="https://twitter.com/1HiveOrg" target="_blank">
                 Twitter
               </Link>
             </HeaderText>

@@ -34,7 +34,7 @@ import {
 import { timeframeOptions } from "../constants";
 import { useLatestBlocks } from "./Application";
 import { updateNameData } from "../utils/data";
-import { useBlocksSubgraphClient, useSwaprSubgraphClient } from "./Network";
+import { useBlocksSubgraphClient, useHoneyswapSubgraphClient } from "./Network";
 
 const RESET = "RESET";
 const UPDATE = "UPDATE";
@@ -533,7 +533,7 @@ const getHourlyRateData = async (
 };
 
 export function Updater() {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [, { updateTopPairs }] = usePairDataContext();
   const [nativeCurrencyPrice] = useNativeCurrencyPrice();
@@ -568,7 +568,7 @@ export function Updater() {
 }
 
 export function useHourlyRateData(pairAddress, timeWindow) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { updateHourlyData }] = usePairDataContext();
   const chartData = state?.[pairAddress]?.hourlyData?.[timeWindow];
@@ -613,7 +613,7 @@ export function useHourlyRateData(pairAddress, timeWindow) {
  * store these updates to reduce future redundant calls
  */
 export function useDataForList(pairList) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state] = usePairDataContext();
   const [nativeCurrencyPrice] = useNativeCurrencyPrice();
@@ -686,7 +686,7 @@ export function useDataForList(pairList) {
  * Get all the current and 24hr changes for a pair
  */
 export function usePairData(pairAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { update }] = usePairDataContext();
   const [nativeCurrencyPrice] = useNativeCurrencyPrice();
@@ -721,7 +721,7 @@ export function usePairData(pairAddress) {
  * Get most recent txns for a pair
  */
 export function usePairTransactions(pairAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const [state, { updatePairTxns }] = usePairDataContext();
   const pairTxns = state?.[pairAddress]?.txns;
   useEffect(() => {
@@ -737,7 +737,7 @@ export function usePairTransactions(pairAddress) {
 }
 
 export function usePairChartData(pairAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const [state, { updateChartData }] = usePairDataContext();
   const chartData = state?.[pairAddress]?.chartData;
 
