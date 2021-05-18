@@ -12,7 +12,7 @@ import LocalLoader from "../components/LocalLoader";
 import { RowBetween } from "../components/Row";
 import { useMedia } from "react-use";
 import Search from "../components/Search";
-import { useSwaprSubgraphClient } from "../contexts/Network";
+import { useHoneyswapSubgraphClient } from "../contexts/Network";
 
 const AccountWrapper = styled.div`
   @media screen and (max-width: 600px) {
@@ -26,7 +26,7 @@ function AccountLookup() {
     window.scrollTo(0, 0);
   }, []);
 
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const topLps = useTopLps(client);
 
   const below600 = useMedia("(max-width: 600px)");

@@ -1,46 +1,57 @@
 export const SupportedNetwork = Object.freeze({
-  MAINNET: "Mainnet",
+  // MAINNET: "Mainnet",
   XDAI: "xDAI",
+  MATIC: "Polygon"
 });
 
 export const ChainId = Object.freeze({
-  [SupportedNetwork.MAINNET]: 1,
+  // [SupportedNetwork.MAINNET]: 1,
   [SupportedNetwork.XDAI]: 100,
+  [SupportedNetwork.MATIC]: 137
 });
 
 export const SupportedNetworkForChainId = Object.freeze({
-  [ChainId[SupportedNetwork.MAINNET]]: SupportedNetwork.MAINNET,
+  // [ChainId[SupportedNetwork.MAINNET]]: SupportedNetwork.MAINNET,
   [ChainId[SupportedNetwork.XDAI]]: SupportedNetwork.XDAI,
+  [ChainId[SupportedNetwork.MATIC]]: SupportedNetwork.MATIC,
 });
 
 export const FACTORY_ADDRESS = {
-  [SupportedNetwork.MAINNET]: "0xd34971BaB6E5E356fd250715F5dE0492BB070452",
+  // [SupportedNetwork.MAINNET]: "0xd34971BaB6E5E356fd250715F5dE0492BB070452",
   [SupportedNetwork.XDAI]: "0x5d48c95adffd4b40c1aaadc4e08fc44117e02179",
+  [SupportedNetwork.MATIC]: "0x5D03E459d1caBfF7AF228b3A66fC097756Ec60ED",
 };
 
 export const NATIVE_CURRENCY_SYMBOL = {
-  [SupportedNetwork.MAINNET]: "ETH",
+  // [SupportedNetwork.MAINNET]: "ETH",
   [SupportedNetwork.XDAI]: "xDAI",
+  [SupportedNetwork.MATIC]: "MATIC",
 };
 
 export const NATIVE_CURRENCY_WRAPPER = {
-  [SupportedNetwork.MAINNET]: {
-    symbol: "WETH",
-    address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-  },
+  // [SupportedNetwork.MAINNET]: {
+  //   symbol: "WETH",
+  //   address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+  // },
   [SupportedNetwork.XDAI]: {
     symbol: "WXDAI",
     address: "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d",
   },
+  [SupportedNetwork.MATIC]: {
+    symbol: "WMATIC",
+    address: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+  },
 };
 
 export const DXD_ADDRESS = {
-  [SupportedNetwork.MAINNET]: "0xa1d65E8fB6e87b60FECCBc582F7f97804B725521",
-  [SupportedNetwork.XDAI]: "0xb90d6bec20993be5d72a5ab353343f7a0281f158",
+  // [SupportedNetwork.MAINNET]: "0xc3589f56b6869824804a5ea29f2c9886af1b0fce",
+  [SupportedNetwork.XDAI]: "0x71850b7E9Ee3f13Ab46d67167341E4bDc905Eef9",
+  [SupportedNetwork.MATIC]: "0xb371248Dd0f9E4061ccf8850E9223Ca48Aa7CA4b",
+
 };
 
 export const ETHERSCAN_PREFIXES = {
-  [SupportedNetwork.MAINNET]: "",
+  // [SupportedNetwork.MAINNET]: "",
 };
 
 export const BUNDLE_ID = "1";

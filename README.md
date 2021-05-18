@@ -1,8 +1,8 @@
 # DXstats
 
-Transaction and liquidity pool stats for [Swapr](https://swapr.eth.link).
+Transaction and liquidity pool stats for [Honeyswap](https://app.honeyswap.org).
 
-Check it out live: [https://dxstats.eth.link](https://dxstats.eth.link).
+Check it out live: [https://dxstats.eth.link](https://info.honeyswap.org).
 
 ### To Start Development
 

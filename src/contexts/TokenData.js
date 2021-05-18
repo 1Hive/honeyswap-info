@@ -33,7 +33,7 @@ import {
 import { timeframeOptions } from "../constants";
 import { useLatestBlocks } from "./Application";
 import { updateNameData } from "../utils/data";
-import { useBlocksSubgraphClient, useSwaprSubgraphClient } from "./Network";
+import { useBlocksSubgraphClient, useHoneyswapSubgraphClient } from "./Network";
 
 const RESET = "RESET";
 const UPDATE = "UPDATE";
@@ -700,7 +700,7 @@ const getTokenChartData = async (client, tokenAddress) => {
 };
 
 export function Updater() {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [, { updateTopTokens }] = useTokenDataContext();
   const [
@@ -732,7 +732,7 @@ export function Updater() {
 }
 
 export function useTokenData(tokenAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { update }] = useTokenDataContext();
   const [
@@ -772,7 +772,7 @@ export function useTokenData(tokenAddress) {
 }
 
 export function useTokenTransactions(tokenAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { updateTokenTxns }] = useTokenDataContext();
   const tokenTxns = state?.[tokenAddress]?.txns;
@@ -808,7 +808,7 @@ export function useTokenTransactions(tokenAddress) {
 }
 
 export function useTokenPairs(tokenAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { updateAllPairs }] = useTokenDataContext();
   const tokenPairs = state?.[tokenAddress]?.[TOKEN_PAIRS_KEY];
@@ -827,7 +827,7 @@ export function useTokenPairs(tokenAddress) {
 }
 
 export function useTokenChartData(tokenAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { updateChartData }] = useTokenDataContext();
   const chartData = state?.[tokenAddress]?.chartData;
@@ -851,7 +851,7 @@ export function useTokenChartData(tokenAddress) {
  * @param {*} interval  // the chunk size in seconds - default is 1 hour of 3600s
  */
 export function useTokenPriceData(tokenAddress, timeWindow, interval = 3600) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { updatePriceData }] = useTokenDataContext();
   const chartData = state?.[tokenAddress]?.[timeWindow]?.[interval];
