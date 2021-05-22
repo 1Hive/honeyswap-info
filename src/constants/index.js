@@ -19,7 +19,7 @@ export const SupportedNetworkForChainId = Object.freeze({
 export const FACTORY_ADDRESS = {
   // [SupportedNetwork.MAINNET]: "0xd34971BaB6E5E356fd250715F5dE0492BB070452",
   [SupportedNetwork.XDAI]: "0xa818b4f111ccac7aa31d0bcc0806d64f2e0737d7",
-  [SupportedNetwork.MATIC]: "0x03DAa61d8007443a6584e3d8f85105096543C19c",
+  [SupportedNetwork.MATIC]: "0x03daa61d8007443a6584e3d8f85105096543c19c",
 };
 
 export const NATIVE_CURRENCY_SYMBOL = {
