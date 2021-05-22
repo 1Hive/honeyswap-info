@@ -19,6 +19,13 @@ export const clients = {
     cache: new InMemoryCache(),
     shouldBatch: true,
   }),
+  [SupportedNetwork.MATIC]: new ApolloClient({
+    link: new HttpLink({
+      uri: "https://api.thegraph.com/subgraphs/name/1hive/honeyswap-polygon",
+    }),
+    cache: new InMemoryCache(),
+    shouldBatch: true,
+  }),
 };
 
 export const healthClient = new ApolloClient({
