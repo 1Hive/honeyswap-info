@@ -1,13 +1,13 @@
 export const SupportedNetwork = Object.freeze({
   // MAINNET: "Mainnet",
   XDAI: "xDAI",
-  MATIC: "Polygon"
+  MATIC: "MATIC",
 });
 
 export const ChainId = Object.freeze({
   // [SupportedNetwork.MAINNET]: 1,
   [SupportedNetwork.XDAI]: 100,
-  [SupportedNetwork.MATIC]: 137
+  [SupportedNetwork.MATIC]: 137,
 });
 
 export const SupportedNetworkForChainId = Object.freeze({
@@ -18,8 +18,8 @@ export const SupportedNetworkForChainId = Object.freeze({
 
 export const FACTORY_ADDRESS = {
   // [SupportedNetwork.MAINNET]: "0xd34971BaB6E5E356fd250715F5dE0492BB070452",
-  [SupportedNetwork.XDAI]: "0x5d48c95adffd4b40c1aaadc4e08fc44117e02179",
-  [SupportedNetwork.MATIC]: "0x5D03E459d1caBfF7AF228b3A66fC097756Ec60ED",
+  [SupportedNetwork.XDAI]: "0xa818b4f111ccac7aa31d0bcc0806d64f2e0737d7",
+  [SupportedNetwork.MATIC]: "0x03DAa61d8007443a6584e3d8f85105096543C19c",
 };
 
 export const NATIVE_CURRENCY_SYMBOL = {
@@ -43,11 +43,10 @@ export const NATIVE_CURRENCY_WRAPPER = {
   },
 };
 
-export const DXD_ADDRESS = {
+export const HNY_ADDRESS = {
   // [SupportedNetwork.MAINNET]: "0xc3589f56b6869824804a5ea29f2c9886af1b0fce",
   [SupportedNetwork.XDAI]: "0x71850b7E9Ee3f13Ab46d67167341E4bDc905Eef9",
   [SupportedNetwork.MATIC]: "0xb371248Dd0f9E4061ccf8850E9223Ca48Aa7CA4b",
-
 };
 
 export const ETHERSCAN_PREFIXES = {

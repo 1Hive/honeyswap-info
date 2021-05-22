@@ -2,12 +2,12 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import EthereumLogo from "../../assets/eth.png";
 import xDAILogo from "../../assets/xdai-logo.png";
-import DXDLogo from "../../assets/dxd-logo.svg";
+import HNYLogo from "../../assets/honeyswap-logo.svg";
 import {
   useNativeCurrencyWrapper,
   useSelectedNetwork,
 } from "../../contexts/Network.js";
-import { DXD_ADDRESS, SupportedNetwork } from "../../constants/index.js";
+import { HNY_ADDRESS, SupportedNetwork } from "../../constants/index.js";
 import { useTokenIcon } from "../../hooks/useTokenIcon.js";
 import { getAddress } from "ethers/utils";
 
@@ -52,8 +52,8 @@ export default function TokenLogo({
         selectedNetwork === SupportedNetwork.XDAI ? xDAILogo : EthereumLogo,
       ];
     }
-    if (lowercaseAddress === DXD_ADDRESS[selectedNetwork].toLowerCase()) {
-      return [DXDLogo];
+    if (lowercaseAddress === HNY_ADDRESS[selectedNetwork].toLowerCase()) {
+      return [HNYLogo];
     }
     return [getTokenLogoURL(address), tokenIcon];
   }, [address, tokenIcon, nativeCurrencyWrapper, selectedNetwork]);
