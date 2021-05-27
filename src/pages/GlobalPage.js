@@ -24,6 +24,9 @@ import { CustomLink } from '../components/Link'
 
 import { PageWrapper, ContentWrapper } from '../components'
 
+import { useSelectedNetwork } from '../contexts/Network'
+import { NETWORK_COLORS } from '../constants'
+
 const ListOptions = styled(AutoRow)`
   height: 40px;
   width: 100%;
@@ -50,6 +53,7 @@ function GlobalPage() {
   const allTokens = useAllTokenData()
   const transactions = useGlobalTransactions()
   const { totalLiquidityUSD, oneDayVolumeUSD, volumeChangeUSD, liquidityChangeUSD } = useGlobalData()
+  const network = useSelectedNetwork()
 
   // breakpoints
   const below800 = useMedia('(max-width: 800px)')
@@ -65,7 +69,9 @@ function GlobalPage() {
 
   return (
     <PageWrapper>
-      <ThemedBackground backgroundColor={transparentize(0.8, '#7CE0D6')} />
+      <ThemedBackground
+        backgroundColor={transparentize(0.8, NETWORK_COLORS[network].hex)}
+      />
       <ContentWrapper>
         <div>
           <AutoColumn gap="24px" style={{ paddingBottom: below800 ? '0' : '24px' }}>

@@ -1,15 +1,14 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import EthereumLogo from "../../assets/eth.png";
+import MaticLogo from "../../assets/matic-logo.png";
 import xDAILogo from "../../assets/xdai-logo.png";
-import HNYLogo from "../../assets/honeyswap-logo.svg";
+import HNYLogo from "../../assets/hny-logo.png";
 import {
   useNativeCurrencyWrapper,
   useSelectedNetwork,
 } from "../../contexts/Network.js";
 import { HNY_ADDRESS, SupportedNetwork } from "../../constants/index.js";
 import { useTokenIcon } from "../../hooks/useTokenIcon.js";
-import { getAddress } from "ethers/utils";
 
 const Inline = styled.div`
   display: flex;
@@ -24,13 +23,6 @@ const Image = styled.img`
   border-radius: 50%;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
 `;
-
-const getTokenLogoURL = (address) => {
-  if (!address) return undefined;
-  return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${getAddress(
-    address
-  )}/logo.png`;
-};
 
 const BAD_IMAGES = {};
 
@@ -48,14 +40,12 @@ export default function TokenLogo({
     if (!address && !tokenIcon) return [];
     const lowercaseAddress = address.toLowerCase();
     if (lowercaseAddress === nativeCurrencyWrapper.address.toLowerCase()) {
-      return [
-        selectedNetwork === SupportedNetwork.XDAI ? xDAILogo : EthereumLogo,
-      ];
+      return [selectedNetwork === SupportedNetwork.XDAI ? xDAILogo : MaticLogo];
     }
     if (lowercaseAddress === HNY_ADDRESS[selectedNetwork].toLowerCase()) {
       return [HNYLogo];
     }
-    return [getTokenLogoURL(address), tokenIcon];
+    return [tokenIcon];
   }, [address, tokenIcon, nativeCurrencyWrapper, selectedNetwork]);
 
   const source = sources.find((src) => !BAD_IMAGES[src]);

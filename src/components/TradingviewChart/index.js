@@ -9,6 +9,9 @@ import { Play } from 'react-feather'
 import { useDarkModeManager } from '../../contexts/LocalStorage'
 import { IconWrapper } from '..'
 
+import { useSelectedNetwork } from '../../contexts/Network'
+import { NETWORK_COLORS } from '../../constants'
+
 dayjs.extend(utc)
 
 export const CHART_TYPES = {
@@ -35,6 +38,7 @@ const TradingViewChart = ({
 }) => {
   // reference for DOM element to create with chart
   const ref = useRef()
+  const network = useSelectedNetwork()
 
   // pointer to the chart object
   const [chartCreated, setChartCreated] = useState(false)
@@ -129,7 +133,7 @@ const TradingViewChart = ({
       var series =
         type === CHART_TYPES.BAR
           ? chart.addHistogramSeries({
-              color: '#7CE0D6',
+              color: NETWORK_COLORS[network].hex,
               priceFormat: {
                 type: 'volume',
               },
@@ -137,13 +141,13 @@ const TradingViewChart = ({
                 top: 0.32,
                 bottom: 0,
               },
-              lineColor: '#7CE0D6',
+              lineColor: NETWORK_COLORS[network].hex,
               lineWidth: 3,
             })
           : chart.addAreaSeries({
-              topColor: '#7CE0D6',
-              bottomColor: 'rgba(124, 224, 214, 0)',
-              lineColor: '#7CE0D6',
+              topColor: NETWORK_COLORS[network].hex,
+              bottomColor: NETWORK_COLORS[network].rgba,
+              lineColor: NETWORK_COLORS[network].hex,
               lineWidth: 3,
             })
 
@@ -227,6 +231,7 @@ const TradingViewChart = ({
     type,
     useWeekly,
     width,
+    network,
   ])
 
   // responsiveness
