@@ -16,14 +16,17 @@ export async function addTokenToMetamask(ethereum, id, symbol, network) {
     }
   }
 
-  const response = await fetch(
-    network === SupportedNetwork.XDAI
-      ? "https://tokens.honeyswap.org"
-      : "https://unpkg.com/quickswap-default-token-list@latest/build/quickswap-default.tokenlist.json"
-  );
+  let tokenListURL;
+  if (network === SupportedNetwork.XDAI)
+    tokenListURL = "https://tokens.honeyswap.org";
+  else if (network === SupportedNetwork.MATIC)
+    tokenListURL =
+      "https://unpkg.com/quickswap-default-token-list@latest/build/quickswap-default.tokenlist.json";
+
+  const response = await fetch(tokenListURL);
 
   if (!response.ok) {
-    console.warn(`could not fetch token list`);
+    console.warn("could not fetch token list");
     return;
   }
 
