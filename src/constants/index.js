@@ -107,3 +107,14 @@ export const NETWORK_DETAIL = {
     metamaskAddable: true,
   },
 };
+
+export const NETWORK_COLORS = {
+  [SupportedNetwork.XDAI]: {
+    hex: "#FCC941",
+    rgba: "rgba(252, 201, 65, 0)",
+  },
+  [SupportedNetwork.MATIC]: {
+    hex: "#8247E5",
+    rgba: "rgba(130, 71, 229, 0)",
+  },
+};
