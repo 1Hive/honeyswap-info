@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import "feather-icons";
 import { withRouter } from "react-router-dom";
 import { Text } from "rebass";
@@ -42,6 +42,7 @@ import {
   useNativeCurrencyWrapper,
   useSelectedNetwork,
 } from "../contexts/Network";
+import { addTokenToMetamask } from "../utils/addTokenToMetamask";
 
 const DashboardWrapper = styled.div`
   width: 100%;
@@ -186,6 +187,13 @@ function TokenPage({ address, history }) {
     });
   }, []);
 
+  const { ethereum } = window;
+  const handleAddTokenToMM = useCallback(
+    (id, symbol) => addTokenToMetamask(ethereum, id, symbol, selectedNetwork),
+    // eslint-disable-next-line
+    []
+  );
+
   return (
     <PageWrapper>
       <ThemedBackground
@@ -266,6 +274,15 @@ function TokenPage({ address, history }) {
                 ml={below500 ? "0" : "2.5rem"}
                 mt={below500 ? "1rem" : "0"}
               >
+                {symbol !== undefined && (
+                  <ButtonDark
+                    onClick={() => handleAddTokenToMM(id, symbol)}
+                    style={{ marginRight: "0.4rem" }}
+                    color={backgroundColor}
+                  >
+                    + Add {symbol} to MetaMask
+                  </ButtonDark>
+                )}
                 {/* {!!!savedTokens[address] && !below800 ? (
                   <Hover onClick={() => addToken(address, symbol)}>
                     <StyledIcon>

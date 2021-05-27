@@ -80,3 +80,30 @@ export const PAIR_BLACKLIST = ["0xb6a741f37d6e455ebcc9f17e2c16d0586c3f57a5"];
 export const FEE_WARNING_TOKENS = [
   "0xd46ba6d942050d489dbd938a2c909a5d5039a161",
 ];
+
+export const NETWORK_DETAIL = {
+  100: {
+    chainId: "0x64",
+    chainName: "xDAI",
+    nativeCurrency: {
+      name: "xDAI",
+      symbol: "xDAI",
+      decimals: 18,
+    },
+    rpcUrls: ["https://rpc.xdaichain.com/"],
+    blockExplorerUrls: ["https://blockscout.com/xdai/mainnet"],
+    metamaskAddable: true,
+  },
+  137: {
+    chainId: "0x89",
+    chainName: "Matic",
+    nativeCurrency: {
+      name: "Matic",
+      symbol: "MATIC",
+      decimals: 18,
+    },
+    rpcUrls: ["https://rpc-mainnet.matic.quiknode.pro/"],
+    blockExplorerUrls: ["https://explorer.matic.network/"],
+    metamaskAddable: true,
+  },
+};
