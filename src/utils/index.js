@@ -51,7 +51,7 @@ export function getPoolLink(
 ) {
   if (!token1Address) {
     return (
-      `https://swapr.eth.link/#/` +
+      `https://app.honeyswap.org/#/` +
       (remove ? `remove` : `add`) +
       `/${
         token0Address === nativeCurrencyWrapper.symbol
@@ -61,7 +61,7 @@ export function getPoolLink(
     );
   } else {
     return (
-      `https://swapr.eth.link/#/` +
+      `https://app.honeyswap.org/#/` +
       (remove ? `remove` : `add`) +
       `/${
         token0Address === nativeCurrencyWrapper.symbol
@@ -84,9 +84,9 @@ export function getSwapLink(
   token1Address = null
 ) {
   if (!token1Address) {
-    return `https://swapr.eth.link/#/swap?inputCurrency=${token0Address}&chainId=${ChainId[selectedNetwork]}`;
+    return `https://app.honeyswap.org/#/swap?inputCurrency=${token0Address}&chainId=${ChainId[selectedNetwork]}`;
   } else {
-    return `https://swapr.eth.link/#/swap?inputCurrency=${
+    return `https://app.honeyswap.org/#/swap?inputCurrency=${
       token0Address === nativeCurrencyWrapper.symbol
         ? nativeCurrency
         : token0Address
@@ -138,7 +138,7 @@ export function getExplorerLink(selectedNetwork, data, type) {
 }
 
 export function getSwaprAppLink(nativeCurrency, linkVariable, selectedNetwork) {
-  let baseSwaprUrl = "https://swapr.eth.link/#/";
+  let baseSwaprUrl = "https://app.honeyswap.org/#/";
   if (!linkVariable) {
     return baseSwaprUrl;
   }
