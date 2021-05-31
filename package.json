@@ -89,6 +89,7 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "@crello/react-lottie": "^0.0.11",
     "git-revision-webpack-plugin": "^3.0.6"
   }
 }
