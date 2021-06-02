@@ -211,7 +211,7 @@ function TokenPage({ address, history }) {
               style={{ width: "fit-content" }}
               color={backgroundColor}
               external
-              href={getExplorerLink(selectedNetwork, account, "address")}
+              href={getExplorerLink(selectedNetwork, address, "address")}
             >
               <Text
                 style={{ marginLeft: ".15rem" }}
