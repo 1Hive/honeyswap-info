@@ -3,8 +3,12 @@ import dayjs from "dayjs";
 import { getShareValueOverTime } from ".";
 
 export const priceOverrides = [
-  "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", // USDC
-  "0x6b175474e89094c44da98b954eedeac495271d0f", // DAI
+  "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", // USDC (XDAI)
+  "0x44fa8e6f47987339850636f88629646662444217", // DAI (XDAI)
+  "0x4ecaba5870353805a9f068101a40e0f32ed605c6", // USDT (XDAI)
+  "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", // USDC (Polygon)
+  "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", // DAI (Polygon)
+  "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", // USDT (Polygon)
 ];
 
 interface ReturnMetrics {
