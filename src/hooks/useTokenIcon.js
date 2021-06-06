@@ -17,11 +17,11 @@ async function getTokenLogo(network, address) {
     // if (network === SupportedNetwork.MAINNET) {
     //   tokenListURL = "https://tokens.coingecko.com/uniswap/all.json"; // coingecko list used for mainnet
     // }
-    if (network === SupportedNetwork.XDAI) {
-      tokenListURL = "https://tokens.honeyswap.org"; // honeyswap list used for xdai
-    } else {
-      tokenListURL =
-        "https://unpkg.com/quickswap-default-token-list@latest/build/quickswap-default.tokenlist.json";
+    if (
+      network === SupportedNetwork.XDAI ||
+      network === SupportedNetwork.MATIC
+    ) {
+      tokenListURL = "https://tokens.honeyswap.org"; // honeyswap list used for xdai and polygon
     }
     const response = await fetch(tokenListURL);
     if (!response.ok) {
