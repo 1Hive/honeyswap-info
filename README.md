@@ -1,18 +1,18 @@
-# DXstats
+## Honeyswap Info
 
 Transaction and liquidity pool stats for [Honeyswap](https://app.honeyswap.org).
 
-Check it out live: [https://dxstats.eth.link](https://info.honeyswap.org).
+Check it out live: [https://info.honeyswap.org](https://info.honeyswap.org).
 
-### To Start Development
+### Contributing
 
-###### Installing dependencies
+#### Installing Dependencies
 
 ```bash
 yarn
 ```
 
-###### Running locally
+#### Running Locally
 
 ```bash
 yarn start
