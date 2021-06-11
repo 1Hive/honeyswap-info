@@ -10,7 +10,6 @@ import toFormat from "toformat";
 import {
   SupportedNetwork,
   timeframeOptions,
-  // ETHERSCAN_PREFIXES,
   ChainId,
 } from "../constants";
 import Numeral from "numeral";
@@ -101,14 +100,9 @@ export function getSwapLink(
 const getExplorerPrefix = (selectedNetwork) => {
   switch (selectedNetwork) {
     case SupportedNetwork.MATIC:
-      return "https://explorer-mainnet.maticvigil.com";
+      return "https://polygonscan.com";
     default:
       return "https://blockscout.com/poa/xdai";
-    // default:
-    //   return `https://${
-    //     ETHERSCAN_PREFIXES[selectedNetwork] ||
-    //     ETHERSCAN_PREFIXES[SupportedNetwork.MAINNET]
-    //   }etherscan.io`;
   }
 };
 
