@@ -6,13 +6,12 @@ import {
   useGlobalData,
   useNativeCurrencyPrice,
 } from "../../contexts/GlobalData";
-import { formattedNum, localNumber } from "../../utils";
+import { formattedNum, localNumber, getFeeRate } from "../../utils";
 
 import { TYPE } from "../../Theme";
 import { useNativeCurrencySymbol } from "../../contexts/Network";
 
 import { useAllPairData } from "../../contexts/PairData";
-import { getAddress } from "ethers/utils";
 
 const Header = styled.div`
   width: 100%;
@@ -38,19 +37,13 @@ export default function GlobalStats() {
     ? formattedNum(nativeCurrencyPrice, true)
     : "-";
 
-  const wethContract = getAddress("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619");
   const allPair = Object.values(useAllPairData());
   let oneDayFees;
 
   if (!allPair.length) oneDayFees = "";
   else {
     const unformattedOneDayFees = allPair
-      .map((pair) =>
-        getAddress(pair.token0.id) === wethContract ||
-        getAddress(pair.token1.id) === wethContract
-          ? +pair.oneDayVolumeUSD * 0.00125
-          : +pair.oneDayVolumeUSD * 0.0025
-      )
+      .map((pair) => +pair.oneDayVolumeUSD * getFeeRate(pair))
       .reduce((acum, current) => acum + current);
 
     oneDayFees = formattedNum(unformattedOneDayFees, true);
