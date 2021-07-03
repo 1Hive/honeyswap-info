@@ -19,6 +19,7 @@ import {
   getExplorerLink,
   getPoolLink,
   getSwapLink,
+  getFeeRate
 } from "../utils";
 import { useColor } from "../hooks";
 import { usePairData, usePairTransactions } from "../contexts/PairData";
@@ -165,12 +166,14 @@ function PairPage({ pairAddress, history }) {
     !usingUtVolume ? volumeChangeUSD : volumeChangeUntracked
   );
 
+  const feeRate = getFeeRate({ token0, token1 });
+
   // get fees	  // get fees
   const fees =
     oneDayVolumeUSD || oneDayVolumeUSD === 0
       ? usingUtVolume
-        ? formattedNum(oneDayVolumeUntracked * 0.0025, true)
-        : formattedNum(oneDayVolumeUSD * 0.0025, true)
+        ? formattedNum(oneDayVolumeUntracked * feeRate, true)
+        : formattedNum(oneDayVolumeUSD * feeRate, true)
       : "-";
 
   // token data for usd

@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { CustomLink } from "../Link";
 import { Divider } from "../../components";
 import { withRouter } from "react-router-dom";
-import { formattedNum, formattedPercent } from "../../utils";
+import { formattedNum, formattedPercent, getFeeRate } from "../../utils";
 import DoubleTokenLogo from "../DoubleLogo";
 import FormattedName from "../FormattedName";
 import QuestionHelper from "../QuestionHelper";
@@ -159,8 +159,9 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10 }) {
     if (pairData && pairData.token0 && pairData.token1) {
       const liquidity = formattedNum(pairData.reserveUSD, true);
       const volume = formattedNum(pairData.oneDayVolumeUSD, true);
+      const feeRate = getFeeRate(pairData);
       const apy = formattedPercent(
-        (pairData.oneDayVolumeUSD * 0.0025 * 365 * 100) / pairData.reserveUSD
+        (pairData.oneDayVolumeUSD * feeRate * 365 * 100) / pairData.reserveUSD
       );
       return (
         <DashGrid
@@ -210,7 +211,7 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10 }) {
           )}
           {!below1080 && (
             <DataText area="fees">
-              {formattedNum(pairData.oneDayVolumeUSD * 0.0025, true)}
+              {formattedNum(pairData.oneDayVolumeUSD * feeRate, true)}
             </DataText>
           )}
           {!below1080 && <DataText area="apy">{apy}</DataText>}
@@ -227,12 +228,16 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10 }) {
       .sort((addressA, addressB) => {
         const pairA = pairs[addressA];
         const pairB = pairs[addressB];
+
+        const feeRateA = getFeeRate(pairA);
+        const feeRateB = getFeeRate(pairB);
+
         if (sortedColumn === SORT_FIELD.APY) {
           const apy0 =
-            parseFloat(pairA.oneDayVolumeUSD * 0.0025 * 356 * 100) /
+            parseFloat(pairA.oneDayVolumeUSD * feeRateA * 356 * 100) /
             parseFloat(pairA.reserveUSD);
           const apy1 =
-            parseFloat(pairB.oneDayVolumeUSD * 0.0025 * 356 * 100) /
+            parseFloat(pairB.oneDayVolumeUSD * feeRateB * 356 * 100) /
             parseFloat(pairB.reserveUSD);
           return apy0 > apy1
             ? (sortDirection ? -1 : 1) * 1
