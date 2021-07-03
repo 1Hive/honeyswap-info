@@ -13,6 +13,7 @@ import {
   ChainId,
 } from "../constants";
 import Numeral from "numeral";
+import { getAddress } from "ethers/utils";
 
 // format libraries
 const Decimal = toFormat(_Decimal);
@@ -596,4 +597,13 @@ export function isEquivalent(a, b) {
     }
   }
   return true;
+}
+
+const wethContract = getAddress("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619");
+
+export function getFeeRate(pairData) {
+  return getAddress(pairData.token0.id) === wethContract ||
+  getAddress(pairData.token1.id) === wethContract
+    ? 0.00125
+    : 0.0025;
 }
