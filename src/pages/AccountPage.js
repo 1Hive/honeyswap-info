@@ -3,7 +3,11 @@ import styled from "styled-components";
 import { useUserTransactions, useUserPositions } from "../contexts/User";
 import TxnList from "../components/TxnList";
 import Panel from "../components/Panel";
-import { formattedNum, getExplorerLink, getPaidFeeRateByTokenSymbols } from "../utils";
+import {
+  formattedNum,
+  getExplorerLink,
+  getPaidFeeRateByTokenSymbols,
+} from "../utils";
 import Row, { AutoRow, RowFixed, RowBetween } from "../components/Row";
 import { AutoColumn } from "../components/Column";
 import UserChart from "../components/UserChart";
@@ -119,12 +123,16 @@ function AccountPage({ account }) {
       ? transactions?.swaps.reduce((total, swap) => {
           const symbol0 = swap.pair.token0.symbol;
           const symbol1 = swap.pair.token1.symbol;
-          const paidFeeRate = getPaidFeeRateByTokenSymbols(symbol0, symbol1);
+          const paidFeeRate = getPaidFeeRateByTokenSymbols(
+            symbol0,
+            symbol1,
+            selectedNetwork
+          );
 
           return total + parseFloat(swap.amountUSD) * paidFeeRate;
         }, 0)
       : 0;
-  }, [transactions]);
+  }, [transactions, selectedNetwork]);
 
   // if any position has token from fee warning list, show warning
   const [showWarning, setShowWarning] = useState(false);

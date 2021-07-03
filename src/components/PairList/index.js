@@ -17,6 +17,7 @@ import { TYPE } from "../../Theme";
 import {
   useNativeCurrencySymbol,
   useNativeCurrencyWrapper,
+  useSelectedNetwork
 } from "../../contexts/Network";
 
 dayjs.extend(utc);
@@ -135,6 +136,7 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10 }) {
 
   const nativeCurrency = useNativeCurrencySymbol();
   const nativeCurrencyWrapper = useNativeCurrencyWrapper();
+  const selectedNetwork = useSelectedNetwork();
 
   useEffect(() => {
     setMaxPage(1); // edit this to do modular
@@ -159,7 +161,7 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10 }) {
     if (pairData && pairData.token0 && pairData.token1) {
       const liquidity = formattedNum(pairData.reserveUSD, true);
       const volume = formattedNum(pairData.oneDayVolumeUSD, true);
-      const feeRate = getFeeRate(pairData);
+      const feeRate = getFeeRate(pairData, selectedNetwork);
       const apy = formattedPercent(
         (pairData.oneDayVolumeUSD * feeRate * 365 * 100) / pairData.reserveUSD
       );
@@ -229,8 +231,8 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10 }) {
         const pairA = pairs[addressA];
         const pairB = pairs[addressB];
 
-        const feeRateA = getFeeRate(pairA);
-        const feeRateB = getFeeRate(pairB);
+        const feeRateA = getFeeRate(pairA, selectedNetwork);
+        const feeRateB = getFeeRate(pairB, selectedNetwork);
 
         if (sortedColumn === SORT_FIELD.APY) {
           const apy0 =

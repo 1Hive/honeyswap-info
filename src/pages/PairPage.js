@@ -123,6 +123,7 @@ function PairPage({ pairAddress, history }) {
     volumeChangeUntracked,
     liquidityChangeUSD,
   } = usePairData(pairAddress);
+  const selectedNetwork = useSelectedNetwork();
 
   useEffect(() => {
     document.querySelector("body").scrollTo(0, 0);
@@ -166,7 +167,7 @@ function PairPage({ pairAddress, history }) {
     !usingUtVolume ? volumeChangeUSD : volumeChangeUntracked
   );
 
-  const feeRate = getFeeRate({ token0, token1 });
+  const feeRate = getFeeRate({ token0, token1 }, selectedNetwork);
 
   // get fees	  // get fees
   const fees =
@@ -196,7 +197,6 @@ function PairPage({ pairAddress, history }) {
         )
       : "";
 
-  const selectedNetwork = useSelectedNetwork();
   const nativeCurrency = useNativeCurrencySymbol();
   const nativeCurrencyWrapper = useNativeCurrencyWrapper();
 

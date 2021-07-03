@@ -9,7 +9,10 @@ import {
 import { formattedNum, localNumber, getFeeRate } from "../../utils";
 
 import { TYPE } from "../../Theme";
-import { useNativeCurrencySymbol } from "../../contexts/Network";
+import {
+  useNativeCurrencySymbol,
+  useSelectedNetwork,
+} from "../../contexts/Network";
 
 import { useAllPairData } from "../../contexts/PairData";
 
@@ -33,6 +36,7 @@ export default function GlobalStats() {
   const { oneDayTxns, pairCount } = useGlobalData();
   const nativeCurrencySymbol = useNativeCurrencySymbol();
   const [nativeCurrencyPrice] = useNativeCurrencyPrice();
+  const selectedNetwork = useSelectedNetwork();
   const formattedNativeCurrencyPrice = nativeCurrencyPrice
     ? formattedNum(nativeCurrencyPrice, true)
     : "-";
@@ -43,7 +47,7 @@ export default function GlobalStats() {
   if (!allPair.length) oneDayFees = "";
   else {
     const unformattedOneDayFees = allPair
-      .map((pair) => +pair.oneDayVolumeUSD * getFeeRate(pair))
+      .map((pair) => +pair.oneDayVolumeUSD * getFeeRate(pair, selectedNetwork))
       .reduce((acum, current) => acum + current);
 
     oneDayFees = formattedNum(unformattedOneDayFees, true);
