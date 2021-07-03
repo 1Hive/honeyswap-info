@@ -602,8 +602,16 @@ export function isEquivalent(a, b) {
 const wethContract = getAddress("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619");
 
 export function getFeeRate({ token0, token1 }) {
+  if (!token0 || !token1) return 0.0025;
+
   return getAddress(token0.id) === wethContract ||
   getAddress(token1.id) === wethContract
     ? 0.00125
     : 0.0025;
+}
+
+export function getPaidFeeRateByTokenSymbols(token0Symbol, token1Symbol) {
+  return token0Symbol === "WETH" || token1Symbol === "WETH"
+    ? 0.0015
+    : 0.003;
 }
