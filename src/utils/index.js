@@ -13,6 +13,7 @@ import {
   ChainId,
 } from "../constants";
 import Numeral from "numeral";
+import { getAddress } from "ethers/utils";
 
 // format libraries
 const Decimal = toFormat(_Decimal);
@@ -596,4 +597,27 @@ export function isEquivalent(a, b) {
     }
   }
   return true;
+}
+
+const wethAddress = getAddress("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619");
+
+export function getFeeRate({ token0, token1 }, selectedNetwork) {
+  let feeRate = 0.0025;
+  if (!token0 || !token1) return feeRate;
+  if (selectedNetwork !== "MATIC") return feeRate;
+  if(getAddress(token0.id) === wethAddress || getAddress(token1.id) === wethAddress) {
+     feeRate = 0.00125;
+  }
+  
+  return feeRate;
+}
+
+export function getPaidFeeRateByTokenSymbols(token0Symbol, token1Symbol, selectedNetwork) {
+  let feeRate = 0.003;
+  if (selectedNetwork !== "MATIC") return feeRate;
+  if (token0Symbol === "WETH" || token1Symbol === "WETH") {
+      feeRate = 0.0015;
+   }
+   
+  return feeRate;
 }

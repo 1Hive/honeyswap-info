@@ -6,10 +6,15 @@ import {
   useGlobalData,
   useNativeCurrencyPrice,
 } from "../../contexts/GlobalData";
-import { formattedNum, localNumber } from "../../utils";
+import { formattedNum, localNumber, getFeeRate } from "../../utils";
 
 import { TYPE } from "../../Theme";
-import { useNativeCurrencySymbol } from "../../contexts/Network";
+import {
+  useNativeCurrencySymbol,
+  useSelectedNetwork,
+} from "../../contexts/Network";
+
+import { useAllPairData } from "../../contexts/PairData";
 
 const Header = styled.div`
   width: 100%;
@@ -28,15 +33,25 @@ export default function GlobalStats() {
   const below400 = useMedia("(max-width: 400px)");
   const below816 = useMedia("(max-width: 816px)");
 
-  const { oneDayVolumeUSD, oneDayTxns, pairCount } = useGlobalData();
+  const { oneDayTxns, pairCount } = useGlobalData();
   const nativeCurrencySymbol = useNativeCurrencySymbol();
   const [nativeCurrencyPrice] = useNativeCurrencyPrice();
+  const selectedNetwork = useSelectedNetwork();
   const formattedNativeCurrencyPrice = nativeCurrencyPrice
     ? formattedNum(nativeCurrencyPrice, true)
     : "-";
-  const oneDayFees = oneDayVolumeUSD
-    ? formattedNum(oneDayVolumeUSD * 0.0025, true)
-    : "";
+
+  const allPair = Object.values(useAllPairData());
+  let oneDayFees;
+
+  if (!allPair.length) oneDayFees = "";
+  else {
+    const unformattedOneDayFees = allPair
+      .map((pair) => +pair.oneDayVolumeUSD * getFeeRate(pair, selectedNetwork))
+      .reduce((acum, current) => acum + current);
+
+    oneDayFees = formattedNum(unformattedOneDayFees, true);
+  }
 
   return (
     <Header>
