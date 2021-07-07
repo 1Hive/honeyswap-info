@@ -599,16 +599,17 @@ export function isEquivalent(a, b) {
   return true;
 }
 
-const wethContract = getAddress("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619");
+const wethAddress = getAddress("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619");
 
 export function getFeeRate({ token0, token1 }, selectedNetwork) {
-  if (!token0 || !token1) return 0.0025;
-  if (selectedNetwork !== "MATIC") return 0.0025;
-
-  return getAddress(token0.id) === wethContract ||
-  getAddress(token1.id) === wethContract
-    ? 0.00125
-    : 0.0025;
+  let feeRate = 0.0025;
+  if (!token0 || !token1) return feeRate;
+  if (selectedNetwork !== "MATIC") return feeRate;
+  if(getAddress(token0.id) === wethAddress || getAddress(token1.id) === wethAddress) {
+     feeRate = 0.00125;
+  }
+  
+  return feeRate;
 }
 
 export function getPaidFeeRateByTokenSymbols(token0Symbol, token1Symbol, selectedNetwork) {
