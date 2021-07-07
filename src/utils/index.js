@@ -613,8 +613,11 @@ export function getFeeRate({ token0, token1 }, selectedNetwork) {
 }
 
 export function getPaidFeeRateByTokenSymbols(token0Symbol, token1Symbol, selectedNetwork) {
-  if (selectedNetwork !== "MATIC") return 0.003;
-  return token0Symbol === "WETH" || token1Symbol === "WETH"
-    ? 0.0015
-    : 0.003;
+  let feeRate = 0.003;
+  if (selectedNetwork !== "MATIC") return feeRate;
+  if (token0Symbol === "WETH" || token1Symbol === "WETH") {
+      feeRate = 0.0015;
+   }
+   
+  return feeRate;
 }
