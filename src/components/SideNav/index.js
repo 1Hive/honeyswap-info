@@ -30,6 +30,10 @@ const Wrapper = styled.div`
   background: linear-gradient(193.68deg, #1b1c22 0.68%, #000000 100.48%);
   color: ${({ theme }) => theme.bg2};
 
+  @media screen and (max-width: 1080px) {
+    z-index: 10000
+  }
+
   @media screen and (max-width: 800px) {
     grid-template-columns: 1fr;
     position: relative;
@@ -217,6 +221,11 @@ function SideNav({ history }) {
       ) : (
         <MobileWrapper>
           <Title />
+          <DropdownSelect
+              active={selectedNetwork}
+              setActive={handleSelectedNetworkChange}
+              options={Object.values(SupportedNetwork)}
+            />
         </MobileWrapper>
       )}
     </Wrapper>
