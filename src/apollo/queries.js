@@ -8,8 +8,8 @@ const FACTORY_STARTING_BLOCK = {
 };
 
 export const SUBGRAPH_HEALTH = gql`
-  query health {
-    indexingStatusForCurrentVersion(subgraphName: "1hive/honeyswap-xdai") {
+  query health($subgraphName: String!) {
+    indexingStatusForCurrentVersion(subgraphName: $subgraphName) {
       synced
       health
       chains {
