@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { healthClient } from "../apollo/client";
 import { SUBGRAPH_HEALTH } from "../apollo/queries";
+import { useSelectedNetwork } from "./Network"
 
 dayjs.extend(utc);
 
@@ -201,12 +202,20 @@ export function useLatestBlocks() {
 
   const latestBlock = state?.[LATEST_BLOCK];
   const headBlock = state?.[HEAD_BLOCK];
+  const selectedNetwork = useSelectedNetwork();
 
   useEffect(() => {
     async function fetch() {
+      let subgraphName;
+      if (selectedNetwork === "xDAI") subgraphName = "1hive/honeyswap-xdai";
+      else subgraphName = "1hive/honeyswap-polygon";
+
       healthClient
         .query({
           query: SUBGRAPH_HEALTH,
+          variables: {
+            subgraphName,
+          },
         })
         .then((res) => {
           const syncedBlock =
@@ -227,7 +236,7 @@ export function useLatestBlocks() {
     if (!latestBlock) {
       fetch();
     }
-  }, [latestBlock, updateHeadBlock, updateLatestBlock]);
+  }, [latestBlock, updateHeadBlock, updateLatestBlock, selectedNetwork]);
 
   return [latestBlock, headBlock];
 }
