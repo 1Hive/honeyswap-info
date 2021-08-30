@@ -124,12 +124,12 @@ export function getMetricsForPositionWindow(
     Number(positionT0.liquidityTokenTotalSupply) === 0
       ? 0
       : Number(positionT0.liquidityTokenBalance) /
-        Number(positionT0.liquidityTokenTotalSupply);
+      Number(positionT0.liquidityTokenTotalSupply);
   const t1Ownership =
     Number(positionT1.liquidityTokenTotalSupply) === 0
       ? 0
       : Number(positionT0.liquidityTokenBalance) /
-        Number(positionT1.liquidityTokenTotalSupply);
+      Number(positionT1.liquidityTokenTotalSupply);
 
   // get starting amounts of token0 and token1 deposited by LP
   const token0_amount_t0 = t0Ownership * Number(positionT0.reserve0);
@@ -233,9 +233,12 @@ export async function getHistoricalPairReturns(
     dayTimestamps
   );
   const shareValuesFormatted = {};
-  shareValues?.map((share) => {
-    shareValuesFormatted[share.timestamp] = share;
-  });
+
+  if (shareValues && Array.isArray(shareValues)) {
+    shareValues.map((share) => {
+      shareValuesFormatted[share.timestamp] = share;
+    });
+  }
 
   // set the default position and data
   let positionT0 = pairSnapshots[0];
