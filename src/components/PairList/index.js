@@ -120,7 +120,7 @@ const FIELD_TO_VALUE = {
   [SORT_FIELD.FEES]: "oneDayVolumeUSD",
 };
 
-function PairList({ pairs, color, disbaleLinks, maxItems = 10 }) {
+function PairList({ pairs, color, disbaleLinks, maxItems = 10, handlePrice }) {
   const below600 = useMedia("(max-width: 600px)");
   const below740 = useMedia("(max-width: 740px)");
   const below1080 = useMedia("(max-width: 1080px)");
@@ -155,12 +155,12 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10 }) {
     }
   }, [ITEMS_PER_PAGE, pairs]);
 
-  const ListItem = ({ pairAddress, index }) => {
+  const ListItem = ({ pairAddress, index, handlePrice }) => {
     const pairData = pairs[pairAddress];
 
     if (pairData && pairData.token0 && pairData.token1) {
-      const liquidity = formattedNum(pairData.reserveUSD, true);
-      const volume = formattedNum(pairData.oneDayVolumeUSD, true);
+      const liquidity = handlePrice ? handlePrice(pairData.reserveUSD) : formattedNum(pairData.reserveUSD, true);
+      const volume = handlePrice ? handlePrice(pairData.oneDayVolumeUSD) : formattedNum(pairData.oneDayVolumeUSD, true);
       const feeRate = getFeeRate(pairData, selectedNetwork);
       const apy = formattedPercent(
         (pairData.oneDayVolumeUSD * feeRate * 365 * 100) / pairData.reserveUSD
@@ -208,12 +208,12 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10 }) {
           <DataText area="vol">{volume}</DataText>
           {!below1080 && (
             <DataText area="volWeek">
-              {formattedNum(pairData.oneWeekVolumeUSD, true)}
+              {handlePrice ? handlePrice(pairData.oneWeekVolumeUSD) : formattedNum(pairData.oneWeekVolumeUSD, true)}
             </DataText>
           )}
           {!below1080 && (
             <DataText area="fees">
-              {formattedNum(pairData.oneDayVolumeUSD * feeRate, true)}
+              {handlePrice ? handlePrice(pairData.oneDayVolumeUSD * feeRate) : formattedNum(pairData.oneDayVolumeUSD * feeRate, true)}
             </DataText>
           )}
           {!below1080 && <DataText area="apy">{apy}</DataText>}
@@ -259,6 +259,7 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10 }) {
                 key={index}
                 index={(page - 1) * ITEMS_PER_PAGE + index + 1}
                 pairAddress={pairAddress}
+                handlePrice={handlePrice}
               />
               <Divider />
             </div>
