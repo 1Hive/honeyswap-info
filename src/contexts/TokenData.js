@@ -429,12 +429,24 @@ const getTokenData = async (
     }
 
     // calculate percentage changes and daily changes
-    const [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
-      data?.tradeVolumeUSD,
-      oneDayData?.tradeVolumeUSD ?? 0,
-      twoDayData?.tradeVolumeUSD ?? 0
+    let [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
+        data?.tradeVolumeUSD,
+        oneDayData?.tradeVolumeUSD ?? 0,
+        twoDayData?.tradeVolumeUSD ?? 0
     );
 
+
+    console.log("address")
+    console.log(address)
+    //check if address is bright token
+    if (address === "0x83ff60e2f93f8edd0637ef669c69d5fb4f64ca8e") {
+      [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
+        data?.untrackedVolumeUSD,
+        oneDayData?.untrackedVolumeUSD ?? 0,
+        twoDayData?.untrackedVolumeUSD ?? 0
+      );
+    }
+    
     // calculate percentage changes and daily changes
     const [oneDayVolumeUT, volumeChangeUT] = get2DayPercentChange(
       data?.untrackedVolumeUSD,
