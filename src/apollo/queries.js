@@ -720,7 +720,7 @@ export const PAIRS_BULK = gql`
   query pairs($allPairs: [Bytes]!) {
     pairs(
       where: { id_in: $allPairs }
-      orderBy: trackedReserveNativeCurrency
+      orderBy: reserveNativeCurrency
       orderDirection: desc
     ) {
       ...PairFields

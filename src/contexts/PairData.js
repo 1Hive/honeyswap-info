@@ -220,6 +220,7 @@ async function getBulkPairData(
   pairList,
   nativeCurrencyPrice
 ) {
+
   const [t1, t2, tWeek] = getTimestampsForChanges();
   let [
     { number: b1 },
@@ -328,6 +329,10 @@ function parseData(
     oneWeekData ? data?.volumeUSD - oneWeekData?.volumeUSD : data.volumeUSD
   );
 
+  const oneWeekVolumeUntracked = parseFloat(
+    oneWeekData ? data?.untrackedVolumeUSD - oneWeekData?.untrackedVolumeUSD : data.untrackedVolumeUSD
+  );
+
   // set volume properties
   data.oneDayVolumeUSD = parseFloat(oneDayVolumeUSD);
   data.oneWeekVolumeUSD = oneWeekVolumeUSD;
@@ -343,6 +348,18 @@ function parseData(
     oneDayData?.reserveUSD
   );
 
+  // adjustments for  HNY-BRIGHT pair
+  if (data.id === "0x0907239acfe1d0cfc7f960fc7651e946bb34a7b0") {
+    data.oneDayVolumeUSD = parseFloat(oneDayVolumeUntracked);
+    data.oneWeekVolumeUSD = oneWeekVolumeUntracked;
+    data.volumeChangeUSD = volumeChangeUntracked;
+    data.trackedReserveUSD =
+      data.untrackedReserveNativeCurrency * nativeCurrencyPrice;
+      
+      
+  }
+
+
   // format if pair hasnt existed for a day or a week
   if (!oneDayData && data && data.createdAtBlockNumber > oneDayBlock) {
     data.oneDayVolumeUSD = parseFloat(data.volumeUSD);
@@ -354,6 +371,7 @@ function parseData(
     data.oneWeekVolumeUSD = parseFloat(data.volumeUSD);
   }
 
+    
   // format incorrect names
   updateNameData(data);
 
@@ -549,10 +567,13 @@ export function Updater() {
       });
 
       // format as array of addresses
-      const formattedPairs = pairs.map((pair) => {
+      let formattedPairs = pairs.map((pair) => {
         return pair.id;
       });
-
+        
+      // manually add BRIGHT-HNY pair
+      formattedPairs.push("0x0907239acfe1d0cfc7f960fc7651e946bb34a7b0")        
+        
       // get data for every pair in list
       let topPairs = await getBulkPairData(
         client,
