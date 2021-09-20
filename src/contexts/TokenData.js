@@ -445,9 +445,6 @@ const getTokenData = async (
         twoDayData?.tradeVolumeUSD ?? 0
     );
 
-
-    console.log("address")
-    console.log(address)
     //check if address is bright token
     if (address === "0x83ff60e2f93f8edd0637ef669c69d5fb4f64ca8e") {
       [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
