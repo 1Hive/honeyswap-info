@@ -285,11 +285,21 @@ const getTopTokens = async (
           }
 
           // calculate percentage changes and daily changes
-          const [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
+          let [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
             data.tradeVolumeUSD,
             oneDayHistory?.tradeVolumeUSD ?? 0,
             twoDayHistory?.tradeVolumeUSD ?? 0
           );
+
+          // check if token id is bright token id
+          if (token.id ===  "0x83ff60e2f93f8edd0637ef669c69d5fb4f64ca8e") {
+           [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
+             data.untrackedVolumeUSD,
+             oneDayHistory?.untrackedVolumeUSD ?? 0,
+              twoDayHistory?.untrackedVolumeUSD ?? 0
+            );    
+          }
+
           const [oneDayTxns, txnChange] = get2DayPercentChange(
             data.txCount,
             oneDayHistory?.txCount ?? 0,
