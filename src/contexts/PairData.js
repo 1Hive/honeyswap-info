@@ -220,7 +220,6 @@ async function getBulkPairData(
   pairList,
   nativeCurrencyPrice
 ) {
-
   const [t1, t2, tWeek] = getTimestampsForChanges();
   let [
     { number: b1 },
