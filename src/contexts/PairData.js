@@ -354,11 +354,8 @@ function parseData(
     data.oneWeekVolumeUSD = oneWeekVolumeUntracked;
     data.volumeChangeUSD = volumeChangeUntracked;
     data.trackedReserveUSD =
-      data.untrackedReserveNativeCurrency * nativeCurrencyPrice;
-      
-      
+      data.untrackedReserveNativeCurrency * nativeCurrencyPrice;            
   }
-
 
   // format if pair hasnt existed for a day or a week
   if (!oneDayData && data && data.createdAtBlockNumber > oneDayBlock) {
@@ -370,7 +367,6 @@ function parseData(
   if (!oneWeekData && data) {
     data.oneWeekVolumeUSD = parseFloat(data.volumeUSD);
   }
-
     
   // format incorrect names
   updateNameData(data);
