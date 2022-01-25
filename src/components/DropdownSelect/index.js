@@ -58,7 +58,13 @@ const DropdownSelect = ({ options, active, setActive, color }) => {
         onClick={() => toggleDropdown(!showDropdown)}
         justify="center"
       >
-        <TYPE.main>{active === "MATIC" ? "Polygon" : active}</TYPE.main>
+        <TYPE.main>
+          {active === "MATIC"
+            ? "Polygon"
+            : active === "xDAI"
+            ? "Gnosis"
+            : active}
+        </TYPE.main>
         <StyledIcon>
           <ArrowStyled />
         </StyledIcon>
@@ -78,7 +84,11 @@ const DropdownSelect = ({ options, active, setActive, color }) => {
                     key={index}
                   >
                     <TYPE.body fontSize={14}>
-                      {option === "MATIC" ? "Polygon" : option}
+                      {option === "MATIC"
+                        ? "Polygon"
+                        : option === "xDAI"
+                        ? "Gnosis"
+                        : option}
                     </TYPE.body>
                   </Row>
                 )
