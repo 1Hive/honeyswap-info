@@ -85,7 +85,7 @@ export const FEE_WARNING_TOKENS = [
 export const NETWORK_DETAIL = {
   100: {
     chainId: "0x64",
-    chainName: "xDAI",
+    chainName: "Gnosis Chain",
     nativeCurrency: {
       name: "xDAI",
       symbol: "xDAI",
@@ -97,7 +97,7 @@ export const NETWORK_DETAIL = {
   },
   137: {
     chainId: "0x89",
-    chainName: "Matic",
+    chainName: "Polygon",
     nativeCurrency: {
       name: "Matic",
       symbol: "MATIC",
@@ -111,11 +111,11 @@ export const NETWORK_DETAIL = {
 
 export const NETWORK_COLORS = {
   [SupportedNetwork.XDAI]: {
-    hex: "#FCC941",
-    rgba: "rgba(252, 201, 65, 0)",
+    hex: '#04795B',
+    rgba: 'rgba(4, 121, 91, 0)',
   },
   [SupportedNetwork.MATIC]: {
-    hex: "#8247E5",
-    rgba: "rgba(130, 71, 229, 0)",
+    hex: '#8247E5',
+    rgba: 'rgba(130, 71, 229, 0)',
   },
-};
+}
