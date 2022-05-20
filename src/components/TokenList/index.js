@@ -121,7 +121,7 @@ const SORT_FIELD = {
 };
 
 // @TODO rework into virtualized list
-function TopTokenList({ tokens, itemMax = 10 }) {
+function TopTokenList({ tokens, itemMax = 10, handlePrice }) {
   // page state
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
@@ -209,14 +209,14 @@ function TopTokenList({ tokens, itemMax = 10 }) {
           </DataText>
         )}
         <DataText area="liq">
-          {formattedNum(item.totalLiquidityUSD, true)}
+          {handlePrice ? handlePrice(item.totalLiquidityUSD) : formattedNum(item.totalLiquidityUSD, true)}
         </DataText>
         <DataText area="vol">
-          {formattedNum(item.oneDayVolumeUSD, true)}
+          {handlePrice ? handlePrice(item.oneDayVolumeUSD) : formattedNum(item.oneDayVolumeUSD, true)}
         </DataText>
         {!below1080 && (
           <DataText area="price" color="text" fontWeight="500">
-            {formattedNum(item.priceUSD, true)}
+            {handlePrice ? handlePrice(item.priceUSD) : formattedNum(item.priceUSD, true)}
           </DataText>
         )}
         {!below1080 && (
