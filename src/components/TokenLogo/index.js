@@ -27,7 +27,7 @@ const Image = styled.img`
 const BAD_IMAGES = {};
 
 export default function TokenLogo({
-  address,
+  address = undefined,
   defaultText = "?",
   header = false,
   size = "24px",
@@ -38,7 +38,7 @@ export default function TokenLogo({
   const tokenIcon = useTokenIcon(address);
   const sources = useMemo(() => {
     if (!address && !tokenIcon) return [];
-    const lowercaseAddress = address.toLowerCase();
+    const lowercaseAddress = address?.toLowerCase();
     if (lowercaseAddress === nativeCurrencyWrapper.address.toLowerCase()) {
       return [selectedNetwork === SupportedNetwork.XDAI ? xDAILogo : MaticLogo];
     }
