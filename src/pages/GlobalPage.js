@@ -1,31 +1,32 @@
-import React, { useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
-import { Box } from 'rebass'
-import styled from 'styled-components'
+import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
+import { Box } from "rebass";
+import styled from "styled-components";
 
-import { AutoRow, RowBetween } from '../components/Row'
-import { AutoColumn } from '../components/Column'
-import PairList from '../components/PairList'
-import TopTokenList from '../components/TokenList'
-import TxnList from '../components/TxnList'
-import GlobalChart from '../components/GlobalChart'
-import Search from '../components/Search'
-import GlobalStats from '../components/GlobalStats'
+import { AutoRow, RowBetween } from "../components/Row";
+import { AutoColumn } from "../components/Column";
+import PairList from "../components/PairList";
+import TopTokenList from "../components/TokenList";
+import TxnList from "../components/TxnList";
+import GlobalChart from "../components/GlobalChart";
+import Search from "../components/Search";
+import GlobalStats from "../components/GlobalStats";
 
-import { useGlobalData, useGlobalTransactions } from '../contexts/GlobalData'
-import { useAllPairData } from '../contexts/PairData'
-import { useMedia } from 'react-use'
-import Panel from '../components/Panel'
-import { useAllTokenData } from '../contexts/TokenData'
-import { formattedNum, formattedPercent } from '../utils'
-import { TYPE, ThemedBackground } from '../Theme'
-import { transparentize } from 'polished'
-import { CustomLink } from '../components/Link'
+import { useGlobalData, useGlobalTransactions } from "../contexts/GlobalData";
+import { useAllPairData } from "../contexts/PairData";
+import { useMedia } from "react-use";
+import Panel from "../components/Panel";
+import { useAllTokenData } from "../contexts/TokenData";
+import { formattedEthUsdNum, formattedNum, formattedPercent } from "../utils";
+import { TYPE, ThemedBackground } from "../Theme";
+import { transparentize } from "polished";
+import { CustomLink } from "../components/Link";
 
-import { PageWrapper, ContentWrapper } from '../components'
+import { PageWrapper, ContentWrapper } from "../components";
 
-import { useSelectedNetwork } from '../contexts/Network'
-import { NETWORK_COLORS } from '../constants'
+import { useSelectedNetwork } from "../contexts/Network";
+import { NETWORK_COLORS, WETH_ADDRESS } from "../constants";
+import UnitOptions from "../components/UnitOptions";
 
 const ListOptions = styled(AutoRow)`
   height: 40px;
@@ -36,7 +37,7 @@ const ListOptions = styled(AutoRow)`
   @media screen and (max-width: 640px) {
     font-size: 1rem;
   }
-`
+`;
 
 const GridRow = styled.div`
   display: grid;
@@ -45,27 +46,43 @@ const GridRow = styled.div`
   column-gap: 6px;
   align-items: start;
   justify-content: space-between;
-`
+`;
 
 function GlobalPage() {
   // get data for lists and totals
-  const allPairs = useAllPairData()
-  const allTokens = useAllTokenData()
-  const transactions = useGlobalTransactions()
-  const { totalLiquidityUSD, oneDayVolumeUSD, volumeChangeUSD, liquidityChangeUSD } = useGlobalData()
-  const network = useSelectedNetwork()
+  const allPairs = useAllPairData();
+  const allTokens = useAllTokenData();
+  const transactions = useGlobalTransactions();
+  const {
+    totalLiquidityUSD,
+    oneDayVolumeUSD,
+    volumeChangeUSD,
+    liquidityChangeUSD,
+  } = useGlobalData();
+  const [selected, setSelected] = useState(0);
+  const network = useSelectedNetwork();
+  const wethNativeCurrency = Number(
+    allTokens[WETH_ADDRESS[network].toLowerCase()].derivedNativeCurrency
+  );
 
   // breakpoints
-  const below800 = useMedia('(max-width: 800px)')
+  const below800 = useMedia("(max-width: 800px)");
+
+  useEffect(() => {
+    const fetchNativeCurrencyWethValue = async () => {};
+    if (selected === 0) {
+      fetchNativeCurrencyWethValue();
+    }
+  }, [selected]);
 
   // scrolling refs
 
   useEffect(() => {
-    document.querySelector('body').scrollTo({
-      behavior: 'smooth',
+    document.querySelector("body").scrollTo({
+      behavior: "smooth",
       top: 0,
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <PageWrapper>
@@ -74,11 +91,17 @@ function GlobalPage() {
       />
       <ContentWrapper>
         <div>
-          <AutoColumn gap="24px" style={{ paddingBottom: below800 ? '0' : '24px' }}>
-            <TYPE.largeHeader>{below800 ? 'Protocol Analytics' : 'Honeyswap Protocol Analytics'}</TYPE.largeHeader>
+          <AutoColumn
+            gap="24px"
+            style={{ paddingBottom: below800 ? "0" : "24px" }}
+          >
+            <TYPE.largeHeader>
+              {below800 ? "Protocol Analytics" : "Honeyswap Protocol Analytics"}
+            </TYPE.largeHeader>
             <Search />
             <GlobalStats />
           </AutoColumn>
+          <UnitOptions selected={selected} setSelected={setSelected} />
           {below800 && ( // mobile card
             <Box mb={20}>
               <Panel>
@@ -90,10 +113,20 @@ function GlobalPage() {
                         <div />
                       </RowBetween>
                       <RowBetween align="flex-end">
-                        <TYPE.main fontSize={'1.5rem'} lineHeight={1} fontWeight={600}>
-                          {formattedNum(oneDayVolumeUSD, true)}
+                        <TYPE.main
+                          fontSize={"1.5rem"}
+                          lineHeight={1}
+                          fontWeight={600}
+                        >
+                          {formattedEthUsdNum(
+                            wethNativeCurrency,
+                            oneDayVolumeUSD,
+                            selected
+                          )}
                         </TYPE.main>
-                        <TYPE.main fontSize={12}>{formattedPercent(volumeChangeUSD)}</TYPE.main>
+                        <TYPE.main fontSize={12}>
+                          {formattedPercent(volumeChangeUSD)}
+                        </TYPE.main>
                       </RowBetween>
                     </AutoColumn>
                     <AutoColumn gap="20px">
@@ -102,10 +135,20 @@ function GlobalPage() {
                         <div />
                       </RowBetween>
                       <RowBetween align="flex-end">
-                        <TYPE.main fontSize={'1.5rem'} lineHeight={1} fontWeight={600}>
-                          {formattedNum(totalLiquidityUSD, true)}
+                        <TYPE.main
+                          fontSize={"1.5rem"}
+                          lineHeight={1}
+                          fontWeight={600}
+                        >
+                          {formattedEthUsdNum(
+                            wethNativeCurrency,
+                            totalLiquidityUSD,
+                            selected
+                          )}
                         </TYPE.main>
-                        <TYPE.main fontSize={12}>{formattedPercent(liquidityChangeUSD)}</TYPE.main>
+                        <TYPE.main fontSize={12}>
+                          {formattedPercent(liquidityChangeUSD)}
+                        </TYPE.main>
                       </RowBetween>
                     </AutoColumn>
                   </AutoColumn>
@@ -115,52 +158,58 @@ function GlobalPage() {
           )}
           {!below800 && (
             <GridRow>
-              <Panel style={{ height: '100%', minHeight: '300px' }}>
-                <GlobalChart display="liquidity" />
+              <Panel style={{ height: "100%", minHeight: "300px" }}>
+                <GlobalChart unit={selected} display="liquidity" />
               </Panel>
-              <Panel style={{ height: '100%' }}>
-                <GlobalChart display="volume" />
+              <Panel style={{ height: "100%" }}>
+                <GlobalChart unit={selected} display="volume" />
               </Panel>
             </GridRow>
           )}
           {below800 && (
-            <AutoColumn style={{ marginTop: '6px' }} gap="24px">
-              <Panel style={{ height: '100%', minHeight: '300px' }}>
-                <GlobalChart display="liquidity" />
+            <AutoColumn style={{ marginTop: "6px" }} gap="24px">
+              <Panel style={{ height: "100%", minHeight: "300px" }}>
+                <GlobalChart unit={selected} display="liquidity" />
               </Panel>
             </AutoColumn>
           )}
-          <ListOptions gap="10px" style={{ marginTop: '2rem', marginBottom: '.5rem' }}>
+          <ListOptions
+            gap="10px"
+            style={{ marginTop: "2rem", marginBottom: ".5rem" }}
+          >
             <RowBetween>
-              <TYPE.main fontSize={'1.125rem'}>Top Tokens</TYPE.main>
-              <CustomLink to={'/tokens'}>See All</CustomLink>
+              <TYPE.main fontSize={"1.125rem"}>Top Tokens</TYPE.main>
+              <CustomLink to={"/tokens"}>See All</CustomLink>
             </RowBetween>
           </ListOptions>
-          <Panel style={{ marginTop: '6px', padding: '1.125rem 0 ' }}>
+          <Panel style={{ marginTop: "6px", padding: "1.125rem 0 " }}>
             <TopTokenList tokens={allTokens} />
           </Panel>
-          <ListOptions gap="10px" style={{ marginTop: '2rem', marginBottom: '.5rem' }}>
+          <ListOptions
+            gap="10px"
+            style={{ marginTop: "2rem", marginBottom: ".5rem" }}
+          >
             <RowBetween>
-              <TYPE.main fontSize={'1rem'}>Top Pairs</TYPE.main>
-              <CustomLink to={'/pairs'}>See All</CustomLink>
+              <TYPE.main fontSize={"1rem"}>Top Pairs</TYPE.main>
+              <CustomLink to={"/pairs"}>See All</CustomLink>
             </RowBetween>
           </ListOptions>
-          <Panel style={{ marginTop: '6px', padding: '1.125rem 0 ' }}>
+          <Panel style={{ marginTop: "6px", padding: "1.125rem 0 " }}>
             <PairList pairs={allPairs} />
           </Panel>
 
           <span>
-            <TYPE.main fontSize={'1.125rem'} style={{ marginTop: '2rem' }}>
+            <TYPE.main fontSize={"1.125rem"} style={{ marginTop: "2rem" }}>
               Transactions
             </TYPE.main>
           </span>
-          <Panel style={{ margin: '1rem 0' }}>
+          <Panel style={{ margin: "1rem 0" }}>
             <TxnList transactions={transactions} />
           </Panel>
         </div>
       </ContentWrapper>
     </PageWrapper>
-  )
+  );
 }
 
-export default withRouter(GlobalPage)
+export default withRouter(GlobalPage);
