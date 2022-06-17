@@ -91,7 +91,7 @@ export const NETWORK_DETAIL = {
       symbol: "xDAI",
       decimals: 18,
     },
-    rpcUrls: ["https://rpc.xdaichain.com/"],
+    rpcUrls: ["https://rpc.gnosischain.com/"],
     blockExplorerUrls: ["https://blockscout.com/xdai/mainnet"],
     metamaskAddable: true,
   },
