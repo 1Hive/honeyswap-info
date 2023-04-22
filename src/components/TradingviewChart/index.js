@@ -35,6 +35,8 @@ const TradingViewChart = ({
   title,
   width,
   useWeekly = false,
+  handlePrice,
+  showETH
 }) => {
   // reference for DOM element to create with chart
   const ref = useRef()
@@ -56,10 +58,10 @@ const TradingViewChart = ({
   }, [chartCreated, data, dataPrev, type])
 
   // parese the data and format for tardingview consumption
-  const formattedData = data?.map((entry) => {
+  const formattedData = data?.map((entry, idx) => {
     return {
       time: dayjs.unix(entry.date).utc().format('YYYY-MM-DD'),
-      value: parseFloat(entry[field]),
+      value: handlePrice ? handlePrice(parseFloat(entry[field]), { numericFormat: true }) : parseFloat(entry[field]),
     }
   })
 
@@ -126,7 +128,7 @@ const TradingViewChart = ({
           },
         },
         localization: {
-          priceFormatter: (val) => formattedNum(val, true),
+          priceFormatter: (val) => showETH ? `${formattedNum(val, false)} ETH` : formattedNum(val, true),
         },
       })
 
@@ -169,12 +171,13 @@ const TradingViewChart = ({
 
       // get the title of the chart
       function setLastBarText() {
+        let num = handlePrice ? handlePrice(base ?? 0) : formattedNum( base ?? 0, true);
         toolTip.innerHTML =
           `<div style="font-size: 16px; margin: 4px 0px; color: ${textColor};">${title} ${
             type === CHART_TYPES.BAR && !useWeekly ? '(24hr)' : ''
           }</div>` +
           `<div style="font-size: 22px; margin: 4px 0px; color:${textColor}" >` +
-          formattedNum(base ?? 0, true) +
+          num +
           `<span style="margin-left: 10px; font-size: 16px; color: ${color};">${formattedPercentChange}</span>` +
           '</div>'
       }
@@ -202,11 +205,11 @@ const TradingViewChart = ({
                 .format('MMMM D, YYYY')
             : dayjs(param.time.year + '-' + param.time.month + '-' + param.time.day).format('MMMM D, YYYY')
           var price = param.seriesPrices.get(series)
-
+          var priceValue = showETH ? `${price.toFixed(2)} ETH` : formattedNum(price, true)
           toolTip.innerHTML =
             `<div style="font-size: 16px; margin: 4px 0px; color: ${textColor};">${title}</div>` +
             `<div style="font-size: 22px; margin: 4px 0px; color: ${textColor}">` +
-            formattedNum(price, true) +
+            priceValue +
             '</div>' +
             '<div>' +
             dateStr +

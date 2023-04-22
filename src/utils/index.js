@@ -621,3 +621,18 @@ export function getPaidFeeRateByTokenSymbols(token0Symbol, token1Symbol, selecte
    
   return feeRate;
 }
+
+// Recommended use this with useMemo()
+export function getTokenBySymbol(symbol, allTokens) {
+  if (!symbol || !allTokens) return;
+  let auxToken;
+  if (typeof allTokens === 'object' && Object.keys(allTokens).length !== 0 && allTokens.constructor === Object) {
+    for (let prop in allTokens) {
+      if (allTokens[prop].symbol === symbol) {
+        auxToken = allTokens[prop];
+        break;
+      }
+    }
+  }
+  return auxToken
+}
