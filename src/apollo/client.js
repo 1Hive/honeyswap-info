@@ -2,6 +2,7 @@ import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { SupportedNetwork } from "../constants";
+const SUBGRAPH_API_KEY = process.env["REACT_APP_SUBGRAPH_API_KEY"];
 
 export const clients = {
   // [SupportedNetwork.MAINNET]: new ApolloClient({
@@ -14,7 +15,7 @@ export const clients = {
   // }),
   [SupportedNetwork.XDAI]: new ApolloClient({
     link: new HttpLink({
-      uri: "https://api.thegraph.com/subgraphs/name/1hive/honeyswap-xdai",
+      uri: `https://gateway.thegraph.com/api/${SUBGRAPH_API_KEY}/subgraphs/id/GKLYucDsN3zVkTyki1Qmfc192i4HyUF7uqU9Py4BbmQH`,
     }),
     cache: new InMemoryCache(),
     shouldBatch: true,
