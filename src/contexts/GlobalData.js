@@ -32,7 +32,7 @@ import { FACTORY_ADDRESS } from "../constants";
 import {
   useBlocksSubgraphClient,
   useSelectedNetwork,
-  useSwaprSubgraphClient,
+  useHoneyswapSubgraphClient,
 } from "./Network";
 
 const UPDATE = "UPDATE";
@@ -284,32 +284,32 @@ async function getGlobalData(
       query: GLOBAL_DATA(factoryAddress),
       fetchPolicy: "network-only",
     });
-    data = result.data.swaprFactories[0];
+    data = result.data.honeyswapFactories[0];
 
     // fetch the historical data
     let oneDayResult = await client.query({
       query: GLOBAL_DATA(factoryAddress, oneDayBlock?.number),
       fetchPolicy: "network-only",
     });
-    oneDayData = oneDayResult.data.swaprFactories[0];
+    oneDayData = oneDayResult.data.honeyswapFactories[0];
 
     let twoDayResult = await client.query({
       query: GLOBAL_DATA(factoryAddress, twoDayBlock?.number),
       fetchPolicy: "network-only",
     });
-    twoDayData = twoDayResult.data.swaprFactories[0];
+    twoDayData = twoDayResult.data.honeyswapFactories[0];
 
     let oneWeekResult = await client.query({
       query: GLOBAL_DATA(factoryAddress, oneWeekBlock?.number),
       fetchPolicy: "network-only",
     });
-    const oneWeekData = oneWeekResult.data.swaprFactories[0];
+    const oneWeekData = oneWeekResult.data.honeyswapFactories[0];
 
     let twoWeekResult = await client.query({
       query: GLOBAL_DATA(factoryAddress, twoWeekBlock?.number),
       fetchPolicy: "network-only",
     });
-    const twoWeekData = twoWeekResult.data.swaprFactories[0];
+    const twoWeekData = twoWeekResult.data.honeyswapFactories[0];
 
     // format the total liquidity in USD
     data.totalLiquidityUSD =
@@ -377,8 +377,8 @@ const getChartData = async (client, oldestDateToFetch) => {
         fetchPolicy: "network-only",
       });
       skip += 1000;
-      data = data.concat(result.data.swaprDayDatas);
-      if (result.data.swaprDayDatas.length < 1000) {
+      data = data.concat(result.data.honeyswapDayDatas);
+      if (result.data.honeyswapDayDatas.length < 1000) {
         allFound = true;
       }
     }
@@ -591,7 +591,7 @@ async function getAllTokensOnSwapr(client) {
  * Hook that fetches overview data, plus all tokens and pairs for search
  */
 export function useGlobalData() {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [
     state,
@@ -649,7 +649,7 @@ export function useGlobalChartData() {
   const [state, { updateChart }] = useGlobalDataContext();
   const [oldestDateFetch, setOldestDateFetched] = useState();
   const [activeWindow] = useTimeframe();
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
 
   const chartDataDaily = state?.chartData?.daily;
   const chartDataWeekly = state?.chartData?.weekly;
@@ -689,7 +689,7 @@ export function useGlobalChartData() {
 }
 
 export function useGlobalTransactions() {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { updateTransactions }] = useGlobalDataContext();
   const transactions = state?.transactions;
@@ -706,7 +706,7 @@ export function useGlobalTransactions() {
 }
 
 export function useNativeCurrencyPrice() {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { updateNativeCurrencyPrice }] = useGlobalDataContext();
   const nativeCurrencyPrice = state?.[NATIVE_CURRENCY_PRICE_KEY];

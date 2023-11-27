@@ -2,13 +2,14 @@ import gql from "graphql-tag";
 import { BUNDLE_ID, FACTORY_ADDRESS, SupportedNetwork } from "../constants";
 
 const FACTORY_STARTING_BLOCK = {
-  [FACTORY_ADDRESS[SupportedNetwork.MAINNET]]: 10000000,
-  [FACTORY_ADDRESS[SupportedNetwork.XDAI]]: 14557349,
+  // [FACTORY_ADDRESS[SupportedNetwork.MAINNET]]: 10000000,
+  [FACTORY_ADDRESS[SupportedNetwork.XDAI]]: 11813490,
+  [FACTORY_ADDRESS[SupportedNetwork.MATIC]]: 14599890,
 };
 
 export const SUBGRAPH_HEALTH = gql`
-  query health {
-    indexingStatusForCurrentVersion(subgraphName: "nicoelzer/swapr") {
+  query health($subgraphName: String!) {
+    indexingStatusForCurrentVersion(subgraphName: $subgraphName) {
       synced
       health
       chains {
@@ -404,8 +405,8 @@ export const PAIR_DAY_DATA_BULK = (pairs, startTimestamp) => {
 };
 
 export const GLOBAL_CHART = gql`
-  query swaprDayDatas($startTime: Int!, $skip: Int!) {
-    swaprDayDatas(
+  query honeyswapDayDatas($startTime: Int!, $skip: Int!) {
+    honeyswapDayDatas(
       first: 1000
       skip: $skip
       where: { date_gt: $startTime }
@@ -424,8 +425,8 @@ export const GLOBAL_CHART = gql`
 `;
 
 export const GLOBAL_DATA = (factoryAddress, block) => {
-  const queryString = ` query swaprFactories {
-      swaprFactories(
+  const queryString = ` query honeyswapFactories {
+      honeyswapFactories(
        ${
          block
            ? `block: { number: ${
@@ -719,7 +720,7 @@ export const PAIRS_BULK = gql`
   query pairs($allPairs: [Bytes]!) {
     pairs(
       where: { id_in: $allPairs }
-      orderBy: trackedReserveNativeCurrency
+      orderBy: reserveNativeCurrency
       orderDirection: desc
     ) {
       ...PairFields

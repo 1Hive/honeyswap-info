@@ -33,7 +33,7 @@ import {
 import { timeframeOptions } from "../constants";
 import { useLatestBlocks } from "./Application";
 import { updateNameData } from "../utils/data";
-import { useBlocksSubgraphClient, useSwaprSubgraphClient } from "./Network";
+import { useBlocksSubgraphClient, useHoneyswapSubgraphClient } from "./Network";
 
 const RESET = "RESET";
 const UPDATE = "UPDATE";
@@ -285,11 +285,21 @@ const getTopTokens = async (
           }
 
           // calculate percentage changes and daily changes
-          const [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
+          let [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
             data.tradeVolumeUSD,
             oneDayHistory?.tradeVolumeUSD ?? 0,
             twoDayHistory?.tradeVolumeUSD ?? 0
           );
+
+          // check if token id is bright token id
+          if (token.id ===  "0x83ff60e2f93f8edd0637ef669c69d5fb4f64ca8e") {
+           [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
+             data.untrackedVolumeUSD,
+             oneDayHistory?.untrackedVolumeUSD ?? 0,
+              twoDayHistory?.untrackedVolumeUSD ?? 0
+            );    
+          }
+
           const [oneDayTxns, txnChange] = get2DayPercentChange(
             data.txCount,
             oneDayHistory?.txCount ?? 0,
@@ -429,12 +439,21 @@ const getTokenData = async (
     }
 
     // calculate percentage changes and daily changes
-    const [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
-      data?.tradeVolumeUSD,
-      oneDayData?.tradeVolumeUSD ?? 0,
-      twoDayData?.tradeVolumeUSD ?? 0
+    let [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
+        data?.tradeVolumeUSD,
+        oneDayData?.tradeVolumeUSD ?? 0,
+        twoDayData?.tradeVolumeUSD ?? 0
     );
 
+    //check if address is bright token
+    if (address === "0x83ff60e2f93f8edd0637ef669c69d5fb4f64ca8e") {
+      [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
+        data?.untrackedVolumeUSD,
+        oneDayData?.untrackedVolumeUSD ?? 0,
+        twoDayData?.untrackedVolumeUSD ?? 0
+      );
+    }
+    
     // calculate percentage changes and daily changes
     const [oneDayVolumeUT, volumeChangeUT] = get2DayPercentChange(
       data?.untrackedVolumeUSD,
@@ -700,7 +719,7 @@ const getTokenChartData = async (client, tokenAddress) => {
 };
 
 export function Updater() {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [, { updateTopTokens }] = useTokenDataContext();
   const [
@@ -732,7 +751,7 @@ export function Updater() {
 }
 
 export function useTokenData(tokenAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { update }] = useTokenDataContext();
   const [
@@ -772,7 +791,7 @@ export function useTokenData(tokenAddress) {
 }
 
 export function useTokenTransactions(tokenAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { updateTokenTxns }] = useTokenDataContext();
   const tokenTxns = state?.[tokenAddress]?.txns;
@@ -808,7 +827,7 @@ export function useTokenTransactions(tokenAddress) {
 }
 
 export function useTokenPairs(tokenAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { updateAllPairs }] = useTokenDataContext();
   const tokenPairs = state?.[tokenAddress]?.[TOKEN_PAIRS_KEY];
@@ -827,7 +846,7 @@ export function useTokenPairs(tokenAddress) {
 }
 
 export function useTokenChartData(tokenAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { updateChartData }] = useTokenDataContext();
   const chartData = state?.[tokenAddress]?.chartData;
@@ -851,7 +870,7 @@ export function useTokenChartData(tokenAddress) {
  * @param {*} interval  // the chunk size in seconds - default is 1 hour of 3600s
  */
 export function useTokenPriceData(tokenAddress, timeWindow, interval = 3600) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { updatePriceData }] = useTokenDataContext();
   const chartData = state?.[tokenAddress]?.[timeWindow]?.[interval];

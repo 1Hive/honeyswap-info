@@ -30,6 +30,10 @@ const Wrapper = styled.div`
   background: linear-gradient(193.68deg, #1b1c22 0.68%, #000000 100.48%);
   color: ${({ theme }) => theme.bg2};
 
+  @media screen and (max-width: 1080px) {
+    z-index: 10000
+  }
+
   @media screen and (max-width: 800px) {
     grid-template-columns: 1fr;
     position: relative;
@@ -193,12 +197,12 @@ function SideNav({ history }) {
             style={{ marginLeft: ".75rem", marginBottom: "4rem" }}
           >
             <HeaderText>
-              <Link href="https://dxdao.eth.link" target="_blank">
-                DXdao
+              <Link href="https://1hive.org" target="_blank">
+                1Hive
               </Link>
             </HeaderText>
             <HeaderText>
-              <Link href="https://twitter.com/SwaprEth" target="_blank">
+              <Link href="https://twitter.com/1HiveOrg" target="_blank">
                 Twitter
               </Link>
             </HeaderText>
@@ -217,6 +221,11 @@ function SideNav({ history }) {
       ) : (
         <MobileWrapper>
           <Title />
+          <DropdownSelect
+              active={selectedNetwork}
+              setActive={handleSelectedNetworkChange}
+              options={Object.values(SupportedNetwork)}
+            />
         </MobileWrapper>
       )}
     </Wrapper>

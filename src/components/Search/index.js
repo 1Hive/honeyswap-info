@@ -21,7 +21,7 @@ import { PAIR_SEARCH, TOKEN_SEARCH } from "../../apollo/queries";
 import FormattedName from "../FormattedName";
 import { TYPE } from "../../Theme";
 import { updateNameData } from "../../utils/data";
-import { useSwaprSubgraphClient } from "../../contexts/Network";
+import { useHoneyswapSubgraphClient } from "../../contexts/Network";
 
 const Container = styled.div`
   height: 48px;
@@ -158,7 +158,7 @@ const Blue = styled.span`
 `;
 
 export const Search = ({ small = false }) => {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   let allTokens = useAllTokensInSwapr();
   const allTokenData = useAllTokenData();
 
@@ -473,10 +473,10 @@ export const Search = ({ small = false }) => {
               : below410
               ? "Search..."
               : below470
-              ? "Search Swapr..."
+              ? "Search Honeyswap..."
               : below700
               ? "Search pairs and tokens..."
-              : "Search Swapr pairs and tokens..."
+              : "Search Honeyswap pairs and tokens..."
           }
           value={value}
           onChange={(e) => {

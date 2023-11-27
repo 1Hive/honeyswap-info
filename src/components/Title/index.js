@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Flex } from 'rebass'
 import Link from '../Link'
 import { RowFixed } from '../Row'
-import Logo from '../../assets/logo_white.svg'
+import Logo from '../../assets/honeyswap-logo.svg'
 import Wordmark from '../../assets/wordmark_white.svg'
 
 const TitleWrapper = styled.div`

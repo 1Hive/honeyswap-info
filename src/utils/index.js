@@ -10,10 +10,10 @@ import toFormat from "toformat";
 import {
   SupportedNetwork,
   timeframeOptions,
-  ETHERSCAN_PREFIXES,
   ChainId,
 } from "../constants";
 import Numeral from "numeral";
+import { getAddress } from "ethers/utils";
 
 // format libraries
 const Decimal = toFormat(_Decimal);
@@ -51,7 +51,7 @@ export function getPoolLink(
 ) {
   if (!token1Address) {
     return (
-      `https://swapr.eth.link/#/` +
+      `https://app.honeyswap.org/#/` +
       (remove ? `remove` : `add`) +
       `/${
         token0Address === nativeCurrencyWrapper.symbol
@@ -61,7 +61,7 @@ export function getPoolLink(
     );
   } else {
     return (
-      `https://swapr.eth.link/#/` +
+      `https://app.honeyswap.org/#/` +
       (remove ? `remove` : `add`) +
       `/${
         token0Address === nativeCurrencyWrapper.symbol
@@ -84,9 +84,9 @@ export function getSwapLink(
   token1Address = null
 ) {
   if (!token1Address) {
-    return `https://swapr.eth.link/#/swap?inputCurrency=${token0Address}&chainId=${ChainId[selectedNetwork]}`;
+    return `https://app.honeyswap.org/#/swap?inputCurrency=${token0Address}&chainId=${ChainId[selectedNetwork]}`;
   } else {
-    return `https://swapr.eth.link/#/swap?inputCurrency=${
+    return `https://app.honeyswap.org/#/swap?inputCurrency=${
       token0Address === nativeCurrencyWrapper.symbol
         ? nativeCurrency
         : token0Address
@@ -100,13 +100,10 @@ export function getSwapLink(
 
 const getExplorerPrefix = (selectedNetwork) => {
   switch (selectedNetwork) {
-    case SupportedNetwork.XDAI:
-      return "https://blockscout.com/poa/xdai";
+    case SupportedNetwork.MATIC:
+      return "https://polygonscan.com";
     default:
-      return `https://${
-        ETHERSCAN_PREFIXES[selectedNetwork] ||
-        ETHERSCAN_PREFIXES[SupportedNetwork.MAINNET]
-      }etherscan.io`;
+      return "https://blockscout.com/poa/xdai";
   }
 };
 
@@ -136,7 +133,7 @@ export function getExplorerLink(selectedNetwork, data, type) {
 }
 
 export function getSwaprAppLink(nativeCurrency, linkVariable, selectedNetwork) {
-  let baseSwaprUrl = "https://swapr.eth.link/#/";
+  let baseSwaprUrl = "https://app.honeyswap.org/#/";
   if (!linkVariable) {
     return baseSwaprUrl;
   }
@@ -600,4 +597,27 @@ export function isEquivalent(a, b) {
     }
   }
   return true;
+}
+
+const wethAddress = getAddress("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619");
+
+export function getFeeRate({ token0, token1 }, selectedNetwork) {
+  let feeRate = 0.0025;
+  if (!token0 || !token1) return feeRate;
+  if (selectedNetwork !== "MATIC") return feeRate;
+  if(getAddress(token0.id) === wethAddress || getAddress(token1.id) === wethAddress) {
+     feeRate = 0.00125;
+  }
+  
+  return feeRate;
+}
+
+export function getPaidFeeRateByTokenSymbols(token0Symbol, token1Symbol, selectedNetwork) {
+  let feeRate = 0.003;
+  if (selectedNetwork !== "MATIC") return feeRate;
+  if (token0Symbol === "WETH" || token1Symbol === "WETH") {
+      feeRate = 0.0015;
+   }
+   
+  return feeRate;
 }

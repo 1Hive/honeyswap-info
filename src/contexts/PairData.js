@@ -34,7 +34,7 @@ import {
 import { timeframeOptions } from "../constants";
 import { useLatestBlocks } from "./Application";
 import { updateNameData } from "../utils/data";
-import { useBlocksSubgraphClient, useSwaprSubgraphClient } from "./Network";
+import { useBlocksSubgraphClient, useHoneyswapSubgraphClient } from "./Network";
 
 const RESET = "RESET";
 const UPDATE = "UPDATE";
@@ -328,6 +328,10 @@ function parseData(
     oneWeekData ? data?.volumeUSD - oneWeekData?.volumeUSD : data.volumeUSD
   );
 
+  const oneWeekVolumeUntracked = parseFloat(
+    oneWeekData ? data?.untrackedVolumeUSD - oneWeekData?.untrackedVolumeUSD : data.untrackedVolumeUSD
+  );
+
   // set volume properties
   data.oneDayVolumeUSD = parseFloat(oneDayVolumeUSD);
   data.oneWeekVolumeUSD = oneWeekVolumeUSD;
@@ -343,6 +347,15 @@ function parseData(
     oneDayData?.reserveUSD
   );
 
+  // adjustments for  HNY-BRIGHT pair
+  if (data.id === "0x0907239acfe1d0cfc7f960fc7651e946bb34a7b0") {
+    data.oneDayVolumeUSD = parseFloat(oneDayVolumeUntracked);
+    data.oneWeekVolumeUSD = oneWeekVolumeUntracked;
+    data.volumeChangeUSD = volumeChangeUntracked;
+    data.trackedReserveUSD =
+      data.untrackedReserveNativeCurrency * nativeCurrencyPrice;            
+  }
+
   // format if pair hasnt existed for a day or a week
   if (!oneDayData && data && data.createdAtBlockNumber > oneDayBlock) {
     data.oneDayVolumeUSD = parseFloat(data.volumeUSD);
@@ -353,7 +366,7 @@ function parseData(
   if (!oneWeekData && data) {
     data.oneWeekVolumeUSD = parseFloat(data.volumeUSD);
   }
-
+    
   // format incorrect names
   updateNameData(data);
 
@@ -533,7 +546,7 @@ const getHourlyRateData = async (
 };
 
 export function Updater() {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [, { updateTopPairs }] = usePairDataContext();
   const [nativeCurrencyPrice] = useNativeCurrencyPrice();
@@ -549,10 +562,13 @@ export function Updater() {
       });
 
       // format as array of addresses
-      const formattedPairs = pairs.map((pair) => {
+      let formattedPairs = pairs.map((pair) => {
         return pair.id;
       });
-
+        
+      // manually add BRIGHT-HNY pair
+      formattedPairs.push("0x0907239acfe1d0cfc7f960fc7651e946bb34a7b0")        
+        
       // get data for every pair in list
       let topPairs = await getBulkPairData(
         client,
@@ -568,7 +584,7 @@ export function Updater() {
 }
 
 export function useHourlyRateData(pairAddress, timeWindow) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { updateHourlyData }] = usePairDataContext();
   const chartData = state?.[pairAddress]?.hourlyData?.[timeWindow];
@@ -613,7 +629,7 @@ export function useHourlyRateData(pairAddress, timeWindow) {
  * store these updates to reduce future redundant calls
  */
 export function useDataForList(pairList) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state] = usePairDataContext();
   const [nativeCurrencyPrice] = useNativeCurrencyPrice();
@@ -686,7 +702,7 @@ export function useDataForList(pairList) {
  * Get all the current and 24hr changes for a pair
  */
 export function usePairData(pairAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const blockClient = useBlocksSubgraphClient();
   const [state, { update }] = usePairDataContext();
   const [nativeCurrencyPrice] = useNativeCurrencyPrice();
@@ -721,7 +737,7 @@ export function usePairData(pairAddress) {
  * Get most recent txns for a pair
  */
 export function usePairTransactions(pairAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const [state, { updatePairTxns }] = usePairDataContext();
   const pairTxns = state?.[pairAddress]?.txns;
   useEffect(() => {
@@ -737,7 +753,7 @@ export function usePairTransactions(pairAddress) {
 }
 
 export function usePairChartData(pairAddress) {
-  const client = useSwaprSubgraphClient();
+  const client = useHoneyswapSubgraphClient();
   const [state, { updateChartData }] = usePairDataContext();
   const chartData = state?.[pairAddress]?.chartData;
 
