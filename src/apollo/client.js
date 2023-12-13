@@ -15,7 +15,7 @@ export const clients = {
   // }),
   [SupportedNetwork.XDAI]: new ApolloClient({
     link: new HttpLink({
-      uri: `https://gateway.thegraph.com/api/${SUBGRAPH_API_KEY}/subgraphs/id/GKLYucDsN3zVkTyki1Qmfc192i4HyUF7uqU9Py4BbmQH`,
+      uri: `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_API_KEY}/subgraphs/id/HTxWvPGcZ5oqWLYEVtWnVJDfnai2Ud1WaABiAR72JaSJ`,
     }),
     cache: new InMemoryCache(),
     shouldBatch: true,
