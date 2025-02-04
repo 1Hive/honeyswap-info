@@ -207,7 +207,7 @@ export function useLatestBlocks() {
   useEffect(() => {
     async function fetch() {
       let subgraphName;
-      if (selectedNetwork === "xDAI") subgraphName = "1hive/honeyswap-xdai";
+      if (selectedNetwork === "xDAI") subgraphName = "1hive/honeyswap-gnosis";
       else subgraphName = "1hive/honeyswap-polygon";
 
       healthClient
