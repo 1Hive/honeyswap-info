@@ -19,7 +19,7 @@ const VOLUME_WINDOW = {
   WEEKLY: "WEEKLY",
   DAYS: "DAYS",
 };
-const GlobalChart = ({ display }) => {
+const GlobalChart = ({ display, handlePrice, showETH }) => {
   // chart options
   const [chartView, setChartView] = useState(
     display === "volume" ? CHART_VIEW.VOLUME : CHART_VIEW.LIQUIDITY
@@ -100,6 +100,8 @@ const GlobalChart = ({ display }) => {
             field="totalLiquidityUSD"
             width={width}
             type={CHART_TYPES.AREA}
+            handlePrice={handlePrice}
+            showETH={showETH}
           />
         </ResponsiveContainer>
       )}
@@ -128,6 +130,8 @@ const GlobalChart = ({ display }) => {
             width={width}
             type={CHART_TYPES.BAR}
             useWeekly={volumeWindow === VOLUME_WINDOW.WEEKLY}
+            handlePrice={handlePrice}
+            showETH={showETH}
           />
         </ResponsiveContainer>
       )}

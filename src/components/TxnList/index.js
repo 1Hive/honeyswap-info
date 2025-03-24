@@ -164,7 +164,7 @@ function getTransactionType(event, symbol0, symbol1) {
 }
 
 // @TODO rework into virtualized list
-function TxnList({ transactions, symbol0Override, symbol1Override, color }) {
+function TxnList({ transactions, symbol0Override, symbol1Override, color, handlePrice }) {
   const selectedNetwork = useSelectedNetwork();
 
   // page state
@@ -286,7 +286,7 @@ function TxnList({ transactions, symbol0Override, symbol1Override, color }) {
   const below1080 = useMedia("(max-width: 1080px)");
   const below780 = useMedia("(max-width: 780px)");
 
-  const ListItem = ({ item }) => {
+  const ListItem = ({ item, handlePrice }) => {
     return (
       <DashGrid style={{ height: "48px" }}>
         <DataText area="txn" fontWeight="500">
@@ -302,7 +302,7 @@ function TxnList({ transactions, symbol0Override, symbol1Override, color }) {
             )}
           </Link>
         </DataText>
-        <DataText area="value">{formattedNum(item.amountUSD, true)}</DataText>
+        <DataText area="value">{handlePrice ? handlePrice(item.amountUSD) : formattedNum(item.amountUSD, true)}</DataText>
         {!below780 && (
           <>
             <DataText area="amountOther">
@@ -490,7 +490,7 @@ function TxnList({ transactions, symbol0Override, symbol1Override, color }) {
           filteredList.map((item, index) => {
             return (
               <div key={index}>
-                <ListItem key={index} index={index + 1} item={item} />
+                <ListItem key={index} index={index + 1} item={item} handlePrice={handlePrice} />
                 <Divider />
               </div>
             );
