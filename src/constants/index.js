@@ -49,6 +49,10 @@ export const HNY_ADDRESS = {
   [SupportedNetwork.MATIC]: "0xb371248Dd0f9E4061ccf8850E9223Ca48Aa7CA4b",
 };
 
+export const WETH_ADDRESS = {
+  [SupportedNetwork.XDAI]: "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1",
+};
+
 export const ETHERSCAN_PREFIXES = {
   // [SupportedNetwork.MAINNET]: "",
 };

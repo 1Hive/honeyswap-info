@@ -7,11 +7,7 @@ import { GET_BLOCK, GET_BLOCKS, SHARE_VALUE } from "../apollo/queries";
 import { Text } from "rebass";
 import _Decimal from "decimal.js-light";
 import toFormat from "toformat";
-import {
-  SupportedNetwork,
-  timeframeOptions,
-  ChainId,
-} from "../constants";
+import { SupportedNetwork, timeframeOptions, ChainId } from "../constants";
 import Numeral from "numeral";
 import { getAddress } from "ethers/utils";
 
@@ -452,6 +448,10 @@ export const toSignificant = (number, significantDigits) => {
   return updated.toFormat(updated.decimalPlaces(), { groupSeparator: "" });
 };
 
+export const formattedEthUsdNum = (weth, number, unit) => {
+  return formattedNum(!unit ? number : number / weth, !unit);
+};
+
 export const formattedNum = (number, usd = false, acceptNegatives = false) => {
   if (isNaN(number) || number === "" || number === undefined) {
     return usd ? "$0" : 0;
@@ -605,19 +605,26 @@ export function getFeeRate({ token0, token1 }, selectedNetwork) {
   let feeRate = 0.0025;
   if (!token0 || !token1) return feeRate;
   if (selectedNetwork !== "MATIC") return feeRate;
-  if(getAddress(token0.id) === wethAddress || getAddress(token1.id) === wethAddress) {
-     feeRate = 0.00125;
+  if (
+    getAddress(token0.id) === wethAddress ||
+    getAddress(token1.id) === wethAddress
+  ) {
+    feeRate = 0.00125;
   }
-  
+
   return feeRate;
 }
 
-export function getPaidFeeRateByTokenSymbols(token0Symbol, token1Symbol, selectedNetwork) {
+export function getPaidFeeRateByTokenSymbols(
+  token0Symbol,
+  token1Symbol,
+  selectedNetwork
+) {
   let feeRate = 0.003;
   if (selectedNetwork !== "MATIC") return feeRate;
   if (token0Symbol === "WETH" || token1Symbol === "WETH") {
-      feeRate = 0.0015;
-   }
-   
+    feeRate = 0.0015;
+  }
+
   return feeRate;
 }

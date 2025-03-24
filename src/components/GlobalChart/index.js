@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { ResponsiveContainer } from "recharts";
-import { timeframeOptions } from "../../constants";
+import { timeframeOptions, WETH_ADDRESS } from "../../constants";
 import { useGlobalChartData, useGlobalData } from "../../contexts/GlobalData";
 import { useMedia } from "react-use";
 import DropdownSelect from "../DropdownSelect";
@@ -9,6 +9,8 @@ import { RowFixed } from "../Row";
 import { OptionButton } from "../ButtonStyled";
 import { getTimeframe } from "../../utils";
 import { TYPE } from "../../Theme";
+import { useAllTokenData } from "../../contexts/TokenData";
+import { useSelectedNetwork } from "../../contexts/Network";
 
 const CHART_VIEW = {
   VOLUME: "Volume",
@@ -19,7 +21,7 @@ const VOLUME_WINDOW = {
   WEEKLY: "WEEKLY",
   DAYS: "DAYS",
 };
-const GlobalChart = ({ display }) => {
+const GlobalChart = ({ display, unit }) => {
   // chart options
   const [chartView, setChartView] = useState(
     display === "volume" ? CHART_VIEW.VOLUME : CHART_VIEW.LIQUIDITY
@@ -39,6 +41,12 @@ const GlobalChart = ({ display }) => {
     oneWeekVolume,
     weeklyVolumeChange,
   } = useGlobalData();
+
+  const allTokens = useAllTokenData();
+  const network = useSelectedNetwork();
+  const wethNativeCurrency = Number(
+    allTokens[WETH_ADDRESS[network].toLowerCase()].derivedNativeCurrency
+  );
 
   // based on window, get starttim
   let utcStartTime = getTimeframe(timeWindow);
@@ -96,6 +104,8 @@ const GlobalChart = ({ display }) => {
             data={dailyData}
             base={totalLiquidityUSD}
             baseChange={liquidityChangeUSD}
+            unit={unit}
+            wethCurrency={wethNativeCurrency}
             title="Liquidity"
             field="totalLiquidityUSD"
             width={width}
@@ -120,6 +130,8 @@ const GlobalChart = ({ display }) => {
             title={
               volumeWindow === VOLUME_WINDOW.WEEKLY ? "Volume (7d)" : "Volume"
             }
+            unit={unit}
+            wethCurrency={wethNativeCurrency}
             field={
               volumeWindow === VOLUME_WINDOW.WEEKLY
                 ? "weeklyVolumeUSD"
